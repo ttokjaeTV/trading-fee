@@ -1,0 +1,1444 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>증권사 수수료 비교표 · 똑재TV</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+<style>
+  :root {
+    --bg: #F5EFE6; --bg-alt: #EFE7DA;
+    --ink: #1A1A1A; --ink-soft: #4A4A4A; --ink-mute: #8B8276;
+    --accent: #D9542B; --accent-soft: #F4D5C4;
+    --border: #E5DCC8; --white: #FBF7F0;
+    --brown: #8B6F47; --beige-gold: #C4A57B;
+    --dark-warm: #3A2F26; --dark-warm-soft: #5A4A3D; --green: #4A5A4A;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg); color: var(--ink);
+    padding: 32px 24px; line-height: 1.5; -webkit-font-smoothing: antialiased;
+  }
+  .container { max-width: 1280px; margin: 0 auto; }
+
+  header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 42px; }
+  .logo { display: flex; align-items: center; gap: 12px; }
+  .logo-icon {
+    width: 36px; height: 36px; background: var(--dark-warm); border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--white); font-weight: 900; font-size: 18px;
+  }
+  .logo-name { font-size: 16px; font-weight: 900; letter-spacing: -0.3px; }
+  .logo-sub { font-size: 10px; color: var(--ink-mute); font-weight: 700; letter-spacing: 1px; }
+
+  .hero { text-align: center; margin-bottom: 30px; }
+  .tag {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--white); border: 1.5px solid var(--accent); color: var(--accent);
+    padding: 6px 14px; border-radius: 999px;
+    font-size: 12px; font-weight: 700; margin-bottom: 22px;
+  }
+  .tag .dot { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; }
+  .hero-title { font-size: 54px; font-weight: 900; letter-spacing: -2.3px; line-height: 1.07; margin-bottom: 20px; }
+  .underline-mark { background: linear-gradient(transparent 60%, var(--accent-soft) 60%); padding: 0 4px; }
+  .hero-desc { font-size: 16px; color: var(--ink-soft); line-height: 1.7; font-weight: 500; max-width: 680px; margin: 0 auto; }
+  .asof-badge {
+    display: inline-block; margin-top: 18px;
+    background: var(--bg-alt); border: 1px solid var(--border);
+    border-radius: 999px; padding: 7px 16px;
+    font-size: 12px; font-weight: 700; color: var(--ink-mute);
+  }
+  .asof-badge strong { color: var(--accent); font-weight: 800; }
+
+  /* 범위 안내 박스 */
+  .scope-box {
+    background: var(--white); border: 2px solid var(--accent);
+    border-radius: 18px; padding: 24px 26px; margin-bottom: 26px;
+  }
+  .scope-title { font-size: 17px; font-weight: 900; letter-spacing: -0.4px; margin-bottom: 18px; }
+  .scope-title .hl { background: linear-gradient(transparent 58%, var(--accent-soft) 58%); padding: 0 3px; }
+  .scope-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .scope-item { border-radius: 12px; padding: 16px 18px; }
+  .scope-item.ok { background: var(--bg-alt); border: 1px solid var(--border); }
+  .scope-item.no { background: var(--accent-soft); border: 1px solid rgba(217,84,43,0.3); }
+  .scope-k { font-size: 12px; font-weight: 800; letter-spacing: 0.3px; margin-bottom: 7px; }
+  .scope-item.ok .scope-k { color: var(--ink-mute); }
+  .scope-item.no .scope-k { color: #9C3A17; }
+  .scope-v { font-size: 13px; font-weight: 600; color: var(--ink-soft); line-height: 1.7; }
+  .scope-v b { color: var(--ink); font-weight: 800; }
+  .scope-foot {
+    margin-top: 16px; padding-top: 14px; border-top: 1px dashed var(--border);
+    font-size: 12.5px; font-weight: 600; color: var(--ink-mute); line-height: 1.75;
+  }
+  .scope-foot b { color: var(--ink-soft); font-weight: 800; }
+
+  .scope-note {
+    max-width: 640px; margin: 12px auto 0;
+    font-size: 12.5px; color: var(--ink-mute); font-weight: 600; line-height: 1.65;
+  }
+  .scope-note b { color: var(--ink-soft); font-weight: 800; }
+
+  .top-cta {
+    background: var(--bg-alt); border: 1px solid var(--border); border-radius: 16px;
+    padding: 18px 24px; margin-bottom: 26px;
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px;
+  }
+  .top-cta-text { font-size: 14px; color: var(--ink-soft); font-weight: 600; }
+  .top-cta-text strong { color: var(--ink); font-weight: 800; }
+  .top-cta-links { display: flex; gap: 10px; flex-wrap: wrap; }
+  .top-cta-link {
+    display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px; border-radius: 8px;
+    font-size: 13px; font-weight: 700; text-decoration: none; transition: all 0.15s ease;
+    background: var(--white); border: 1.5px solid var(--border); color: var(--ink);
+  }
+  .top-cta-link:hover { border-color: var(--accent); color: var(--accent); }
+  .top-cta-link.primary { background: var(--accent); color: var(--white); border-color: var(--accent); }
+  .top-cta-link.primary:hover { background: #E66740; border-color: #E66740; }
+  .naver-mark {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 16px; height: 16px; background: #03C75A; color: #FFF;
+    font-weight: 900; font-size: 11px; border-radius: 3px; line-height: 1; flex-shrink: 0;
+  }
+
+  .toc {
+    display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 26px; align-items: center;
+    position: sticky; top: 0; z-index: 20;
+    background: var(--bg); padding: 12px 0; border-bottom: 1px solid var(--border);
+  }
+  .toc a {
+    text-decoration: none; background: var(--white); border: 1.5px solid var(--border);
+    color: var(--ink-soft); font-size: 13px; font-weight: 700;
+    padding: 9px 15px; border-radius: 10px; transition: all 0.15s ease; white-space: nowrap;
+  }
+  .toc a:hover { border-color: var(--accent); color: var(--accent); }
+  .toc-search {
+    flex: 1; min-width: 200px;
+    border: 1.5px solid var(--border); border-radius: 10px;
+    padding: 9px 14px; font-family: inherit; font-size: 13px; font-weight: 700;
+    background: var(--white); color: var(--ink);
+  }
+  .toc-search:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+
+  .card { background: var(--white); border: 1px solid var(--border); border-radius: 20px; padding: 26px; margin-bottom: 26px; }
+  .sec-head { margin-bottom: 18px; }
+  .sec-eyebrow { font-size: 11px; font-weight: 800; letter-spacing: 1.5px; color: var(--accent); margin-bottom: 8px; }
+  .sec-title { font-size: 21px; font-weight: 900; letter-spacing: -0.6px; margin-bottom: 8px; }
+  .sec-desc { font-size: 13.5px; color: var(--ink-mute); font-weight: 600; line-height: 1.7; }
+  .sec-desc strong { color: var(--accent); font-weight: 800; }
+
+  .table-wrap { overflow-x: auto; border-radius: 12px; -webkit-overflow-scrolling: touch; }
+  table.t { width: 100%; border-collapse: collapse; font-size: 13px; }
+  table.t th {
+    background: var(--bg-alt); padding: 11px 10px; text-align: center;
+    font-weight: 800; color: var(--ink-soft); font-size: 11px;
+    border-bottom: 1.5px solid var(--border); white-space: nowrap; vertical-align: middle;
+  }
+  table.t th.l, table.t td.l { text-align: left; }
+  table.t th.r, table.t td.r { text-align: right; }
+  table.t td {
+    padding: 13px 10px; text-align: center; border-bottom: 1px solid var(--border);
+    font-weight: 600; color: var(--ink); vertical-align: middle;
+  }
+  table.t td.nw { white-space: nowrap; }
+  table.t tbody tr:hover { background: var(--bg-alt); }
+  table.t tbody tr:last-child td { border-bottom: none; }
+  table.t tbody tr.hi { background: var(--accent-soft); }
+
+  /* 정렬 가능한 헤더 */
+  th.sortable { cursor: pointer; user-select: none; transition: all 0.12s ease; position: relative; }
+  th.sortable:hover { background: var(--accent-soft) !important; color: #9C3A17 !important; }
+  th.sortable .arrow { display: inline-block; margin-left: 4px; font-size: 9px; opacity: 0.35; letter-spacing: -1px; }
+  th.sortable.on { background: var(--dark-warm) !important; color: var(--white) !important; }
+  th.sortable.on .arrow { opacity: 1; }
+  .sort-hint {
+    display: inline-flex; align-items: center; gap: 5px;
+    background: var(--bg-alt); border: 1px solid var(--border); border-radius: 8px;
+    padding: 5px 11px; font-size: 11.5px; font-weight: 700; color: var(--ink-mute);
+    margin-top: 10px;
+  }
+
+  /* 종합표 전용 */
+  table.master th.g-dom { background: var(--accent-soft); color: #9C3A17; }
+  table.master th.g-ovs { background: #E8DFC9; color: var(--brown); }
+  table.master th.g-evt { background: #DCE4DC; color: var(--green); }
+  table.master td.c-dom { background: rgba(244,213,196,0.22); }
+  table.master td.c-evt { background: rgba(220,228,220,0.3); text-align: left; }
+  table.master tbody tr.hi td.c-dom { background: rgba(244,213,196,0.55); }
+  table.master tbody tr.hi td.c-evt { background: rgba(220,228,220,0.5); }
+
+  .bname { font-weight: 900; font-size: 14px; letter-spacing: -0.3px; }
+  .bsub { font-size: 11px; color: var(--ink-mute); font-weight: 700; margin-top: 3px; line-height: 1.45; }
+  .big { font-size: 15px; font-weight: 900; letter-spacing: -0.4px; }
+  .big.a { color: var(--accent); }
+  .big.b { color: var(--brown); }
+  .big.g { color: var(--green); }
+  .mute { color: var(--ink-mute); font-weight: 600; }
+  .rank { font-weight: 900; color: var(--ink-mute); width: 34px; }
+  tr.hi .rank { color: var(--accent); }
+  .split { font-size: 12.5px; font-weight: 800; line-height: 1.6; }
+  .split .k { color: var(--ink-mute); font-weight: 700; font-size: 11px; }
+
+  .chip { display: inline-block; font-size: 10px; font-weight: 800; padding: 2px 7px; border-radius: 5px; white-space: nowrap; }
+  .chip-warn { background: #E8DFC9; color: var(--brown); }
+  .chip-sep { background: #DCE4DC; color: var(--green); }
+  .chip-inc { background: #E4E0D6; color: var(--ink-mute); }
+  .chip-auto { background: var(--accent); color: var(--white); }
+  .chip-apply { background: var(--dark-warm); color: var(--white); }
+  .chip-check { background: var(--brown); color: var(--white); }
+  .chip-none { background: #D8D0C0; color: var(--dark-warm-soft); }
+  .chip-tier { background: var(--dark-warm-soft); color: var(--white); }
+
+  .evt-line { font-size: 12.5px; font-weight: 800; line-height: 1.5; margin-top: 5px; }
+  .evt-period { font-size: 11px; color: var(--ink-mute); font-weight: 700; margin-top: 4px; }
+
+
+  /* 조건 리스트 (환전 시간대 등) */
+  .cond-list { margin-top: 6px; display: flex; flex-direction: column; gap: 3px; }
+  .cond-row {
+    display: flex; justify-content: space-between; align-items: center; gap: 10px;
+    background: var(--bg-alt); border-radius: 5px; padding: 3px 7px;
+  }
+  .cond-k { font-size: 10.5px; color: var(--ink-mute); font-weight: 700; }
+  .cond-v { font-size: 11px; color: var(--ink); font-weight: 800; }
+
+  /* 수수료 밑 조건부 제도 안내 */
+  .perk-tip { margin-top: 6px; }
+  .perk-tip a {
+    display: inline-block; text-decoration: none;
+    font-size: 10.5px; font-weight: 800; color: var(--accent);
+    background: var(--white); border: 1px dashed var(--accent);
+    border-radius: 6px; padding: 3px 7px; line-height: 1.5;
+  }
+  .perk-tip a:hover { background: var(--accent-soft); }
+
+  /* 이벤트 조건 한 줄 */
+  .evt-cap {
+    font-size: 11px; color: var(--ink-soft); font-weight: 700;
+    margin-top: 4px; line-height: 1.5; white-space: normal;
+  }
+
+  .legend {
+    display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: 16px;
+    padding-top: 14px; border-top: 1px dashed var(--border);
+    font-size: 12px; color: var(--ink-mute); font-weight: 600;
+  }
+  .legend span.li { display: inline-flex; align-items: center; gap: 6px; }
+
+  /* 확인 링크 */
+  .lnk-wrap { display: flex; flex-direction: column; gap: 7px; padding: 2px 0; }
+  .lnk {
+    display: flex; flex-direction: column; gap: 2px; text-decoration: none;
+    background: var(--bg-alt); border: 1px solid var(--border); border-radius: 9px;
+    padding: 8px 12px; transition: all 0.15s ease; max-width: 620px;
+  }
+  .lnk:hover { border-color: var(--accent); background: var(--accent-soft); }
+  .lnk-t { font-size: 12.5px; font-weight: 800; color: var(--ink); letter-spacing: -0.2px; }
+  .lnk:hover .lnk-t { color: #9C3A17; }
+  .lnk-u {
+    font-size: 11px; font-weight: 600; color: var(--ink-mute);
+    word-break: break-all; line-height: 1.45;
+  }
+
+  .notes { margin-top: 16px; padding-top: 14px; border-top: 1px dashed var(--border); }
+  .note-item { display: flex; gap: 10px; font-size: 12.5px; color: var(--ink-soft); font-weight: 600; line-height: 1.65; margin-bottom: 7px; }
+  .note-item .nm { color: var(--accent); font-weight: 800; flex-shrink: 0; min-width: 116px; }
+
+  .calc-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+  .label { font-size: 11px; font-weight: 700; letter-spacing: 1px; color: var(--ink-mute); text-transform: uppercase; margin-bottom: 6px; display: block; }
+  input[type=number] {
+    background: var(--white); border: 1.5px solid var(--border); border-radius: 10px;
+    padding: 10px 14px; font-family: inherit; font-size: 15px; color: var(--ink); font-weight: 700; width: 100%;
+  }
+  input[type=number]:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+  .input-hint { font-size: 12px; color: var(--ink-mute); margin-top: 6px; font-weight: 600; }
+  .segment { display: inline-flex; background: var(--bg-alt); border: 1.5px solid var(--border); border-radius: 12px; padding: 4px; gap: 4px; width: 100%; }
+  .segment button {
+    flex: 1; border: none; background: transparent; font-family: inherit;
+    font-size: 13px; font-weight: 800; color: var(--ink-mute);
+    padding: 9px 10px; border-radius: 9px; cursor: pointer; transition: all 0.15s ease;
+  }
+  .segment button.active { background: var(--accent); color: var(--white); }
+
+  .insight-box { background: var(--dark-warm); color: var(--white); border-radius: 20px; padding: 34px; margin-bottom: 24px; }
+  .insight-label { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; }
+  .insight-label-text { font-size: 12px; font-weight: 800; letter-spacing: 1.5px; color: var(--accent-soft); }
+  .insight-title { font-size: 23px; font-weight: 900; margin-bottom: 16px; letter-spacing: -0.5px; line-height: 1.3; }
+  .insight-desc { font-size: 14.5px; line-height: 1.75; color: #D9D2C5; font-weight: 500; }
+  .insight-desc strong { color: var(--white); font-weight: 800; }
+  .insight-desc + .insight-desc { margin-top: 13px; }
+  .insight-cta { margin-top: 26px; padding-top: 22px; border-top: 1px solid rgba(255,255,255,0.12); display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+  .insight-cta-text { font-size: 14px; color: #D9D2C5; font-weight: 600; margin-right: 8px; }
+  .cta-link { display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; border-radius: 10px; font-size: 13px; font-weight: 700; text-decoration: none; transition: all 0.2s ease; }
+  .cta-link.primary { background: var(--accent); color: var(--white); }
+  .cta-link.primary:hover { background: #E66740; transform: translateY(-1px); }
+  .cta-link.secondary { background: rgba(255,255,255,0.08); color: var(--white); border: 1px solid rgba(255,255,255,0.15); }
+  .cta-link.secondary:hover { background: rgba(255,255,255,0.15); transform: translateY(-1px); }
+
+  .source-box { background: var(--bg-alt); border: 1px solid var(--border); border-radius: 16px; padding: 22px 24px; margin-bottom: 24px; }
+  .source-title { font-size: 13px; font-weight: 800; margin-bottom: 10px; }
+  .source-text { font-size: 12px; color: var(--ink-mute); font-weight: 600; line-height: 1.8; }
+
+  footer { text-align: center; padding: 36px 0 20px; color: var(--ink-mute); font-size: 12px; font-weight: 600; line-height: 1.8; }
+  .hidden-row { display: none !important; }
+
+  @media (max-width: 768px) {
+    body { padding: 16px 12px; }
+    header { margin-bottom: 24px; }
+    .hero { margin-bottom: 22px; }
+    .hero-title { font-size: 29px !important; letter-spacing: -1.1px !important; line-height: 1.18 !important; }
+    .hero-desc { font-size: 14px; }
+    .hero-desc br { display: none; }
+    .tag { font-size: 11px; padding: 5px 12px; margin-bottom: 18px; }
+    .top-cta { flex-direction: column; align-items: stretch; padding: 16px; margin-bottom: 20px; }
+    .top-cta-text { font-size: 13px; line-height: 1.55; }
+    .top-cta-links { width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .top-cta-link { justify-content: center; font-size: 12px; padding: 10px 8px; }
+    .scope-box { padding: 18px 16px; border-radius: 14px; margin-bottom: 20px; }
+    .scope-title { font-size: 14.5px; line-height: 1.45; margin-bottom: 14px; }
+    .scope-grid { grid-template-columns: 1fr !important; gap: 10px; }
+    .scope-item { padding: 14px; }
+    .scope-v { font-size: 12.5px; line-height: 1.65; }
+    .scope-foot { font-size: 12px; line-height: 1.7; }
+    .toc { padding: 10px 0; gap: 6px; }
+    .toc a { font-size: 12px; padding: 8px 11px; }
+    .toc-search { min-width: 100%; order: -1; }
+    .card { padding: 16px 14px !important; margin-bottom: 18px !important; border-radius: 16px !important; }
+    .sec-title { font-size: 17px; }
+    .sec-desc { font-size: 12.5px; line-height: 1.65; }
+    .table-wrap { margin: 0 -14px; padding: 0 14px; }
+    table.t { font-size: 11.5px; }
+    table.t th { padding: 8px 6px; font-size: 10px; }
+    table.t td { padding: 10px 6px; }
+    .bname { font-size: 12.5px; }
+    .bsub { font-size: 10px; }
+    .big { font-size: 13px; }
+    .split { font-size: 11.5px; }
+    .calc-grid { grid-template-columns: 1fr !important; gap: 14px !important; }
+    .note-item { flex-direction: column; gap: 1px; }
+    .note-item .nm { min-width: 0; }
+    .insight-box { padding: 22px 17px; border-radius: 16px; }
+    .insight-title { font-size: 17px !important; line-height: 1.38; }
+    .insight-desc { font-size: 13px; line-height: 1.7; }
+    .insight-cta { flex-direction: column; align-items: stretch; padding-top: 18px; margin-top: 20px; gap: 10px; }
+    .insight-cta-text { font-size: 13px; margin-right: 0; }
+    .cta-link { justify-content: center; }
+    footer { padding: 24px 0 16px; font-size: 11px; }
+  }
+  @media (max-width: 380px) {
+    .hero-title { font-size: 25px !important; }
+    .top-cta-links { grid-template-columns: 1fr !important; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <div class="logo">
+      <div class="logo-icon">똑</div>
+      <div>
+        <div class="logo-name">똑재TV</div>
+        <div class="logo-sub">BROKERAGE FEE TABLE</div>
+      </div>
+    </div>
+  </header>
+
+  <div class="hero">
+    <span class="tag"><span class="dot"></span>증권사 수수료 비교표</span>
+    <h1 class="hero-title">
+      증권사 수수료,<br>
+      <span class="underline-mark">한 장에 다</span> 모았습니다
+    </h1>
+    <p class="hero-desc">
+      국내 13개 증권사의 <b>일반 위탁계좌</b> 기준 국내주식 수수료 · 미국주식 수수료 · 환전 수수료 · 신규계좌 이벤트를<br>
+      각 사 공식 수수료 안내에서 그대로 옮겨 한 표에 정리했습니다.
+    </p>
+    <div class="asof-badge">데이터 확인일 <strong>2026년 8월 19일</strong> · 비대면 <strong>일반 위탁계좌</strong> · 온라인 주문 기준</div>
+    <div class="scope-note">※ <b>지금 계좌를 새로 여는 경우</b>를 기준으로 정리한 표입니다. 연금저축 · IRP · 중개형ISA 등 절세계좌는 제외했습니다.</div>
+  </div>
+
+  <div class="top-cta">
+    <div class="top-cta-text">
+      💡 <strong>수수료보다 계좌 종류가 먼저</strong>입니다. ETF·연금계좌 이야기는 똑재TV에서 매주 만나보세요.
+    </div>
+    <div class="top-cta-links">
+      <a href="https://www.youtube.com/@ttok_jae" target="_blank" rel="noopener" class="top-cta-link primary">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+        똑재TV 구독하기
+      </a>
+      <a href="https://cafe.naver.com/ttokjae" target="_blank" rel="noopener" class="top-cta-link">
+        <span class="naver-mark">N</span>
+        평생 ETF 투자 카페
+      </a>
+    </div>
+  </div>
+
+  <!-- 이 표의 범위 -->
+  <div class="scope-box">
+    <div class="scope-title">📌 이 표는 <span class="hl">지금 계좌를 새로 여는 분</span> 기준입니다</div>
+    <div class="scope-grid">
+      <div class="scope-item ok">
+        <div class="scope-k">이 표로 알 수 있는 것</div>
+        <div class="scope-v">
+          지금 비대면으로 <b>일반 위탁계좌</b>를 새로 열었을 때 적용되는 표준 수수료와, 그때 신청할 수 있는 이벤트입니다.
+          어느 증권사를 고를지 비교하는 용도입니다.
+        </div>
+      </div>
+      <div class="scope-item no">
+        <div class="scope-k">이 표로 알 수 없는 것</div>
+        <div class="scope-v">
+          <b>이미 갖고 계신 계좌의 실제 수수료</b>입니다. 예전에 받은 평생우대·협의수수료, 지난 이벤트의 잔존 요율,
+          계좌 등급, 개설 채널(영업점·은행연계·제휴앱)에 따라 <b>같은 증권사여도 요율이 전혀 다릅니다.</b>
+        </div>
+      </div>
+    </div>
+    <div class="scope-foot">
+      쓰고 계신 계좌의 요율은 <b>각 증권사 앱의 "내 수수료 조회" 또는 고객센터</b>에서 직접 확인하셔야 정확합니다.
+      실제로 메리츠 비대면 평생우대(2022년 종료)처럼 <b>지금은 못 받지만 기존 가입자에게는 계속 적용되는 요율</b>이 회사마다 남아 있습니다.
+      반대로 관리자 지정·주거래지점 변경·부가서비스 가입만으로 <b>우대가 사라지는 경우</b>도 있습니다.
+    </div>
+  </div>
+
+  <div class="toc">
+    <input type="text" id="search" class="toc-search" placeholder="🔍 증권사 이름으로 찾기 (예: 키움)">
+    <a href="#t-master">종합 비교표</a>
+    <a href="#t-tier">구간별 상세</a>
+    <a href="#t-perk">조건부 무료</a>
+    <a href="#t-event">이벤트 상세</a>
+    <a href="#t-calc">금액별 계산</a>
+    <a href="#t-link">확인 링크</a>
+  </div>
+
+  <!-- 종합 비교표 -->
+  <div class="card" id="t-master">
+    <div class="sec-head">
+      <div class="sec-eyebrow">TABLE 01 · 메인</div>
+      <div class="sec-title">증권사별 수수료 종합 비교표</div>
+      <div class="sec-desc">
+        <strong>지금 새로 개설하는</strong> 비대면 일반 위탁계좌 · 온라인 주문 · <strong>이벤트 미적용 표준 수수료</strong> 기준입니다. 절세계좌는 제외했고, <strong>기존에 우대를 받고 계신 계좌에는 이 요율이 그대로 적용되지 않습니다.</strong>
+        기본 정렬은 <strong>회사 규모(자기자본) 순</strong>이며, 수수료 순으로 보시려면 해당 머리글을 누르시면 됩니다.
+      </div>
+      <div class="sort-hint">↕ 회색 표 머리글을 누르면 오름차순 ↔ 내림차순으로 정렬됩니다</div>
+    </div>
+    <div class="table-wrap">
+      <table class="t master">
+        <thead>
+          <tr>
+            <th rowspan="2">순위</th>
+            <th rowspan="2" class="l sortable" data-key="name">증권사<span class="arrow">▲▼</span></th>
+            <th rowspan="2" class="sortable on" data-key="size">회사 규모<div style="font-weight:600;opacity:0.75;">자기자본</div><span class="arrow">▲</span></th>
+            <th colspan="2" class="g-dom">국내주식 수수료</th>
+            <th colspan="2" class="g-ovs">미국주식 수수료</th>
+            <th rowspan="2" class="g-evt sortable" data-key="event">수수료 이벤트<span class="arrow">▲▼</span></th>
+          </tr>
+          <tr>
+            <th class="g-dom sortable" data-key="domRate">표기 요율<span class="arrow">▲▼</span></th>
+            <th class="g-dom sortable" data-key="domEff">실부담 합계<span class="arrow">▲▼</span></th>
+            <th class="g-ovs sortable" data-key="ovsRate">매매수수료<span class="arrow">▲▼</span></th>
+            <th class="g-ovs sortable" data-key="fx">환전 수수료<span class="arrow">▲▼</span></th>
+          </tr>
+        </thead>
+        <tbody id="tb-master"></tbody>
+      </table>
+    </div>
+    <div class="legend">
+      <span class="li"><span class="chip chip-sep">별도</span> 유관기관제비용을 위탁수수료에 더해서 받음</span>
+      <span class="li"><span class="chip chip-inc">포함</span> 표기 요율에 이미 포함</span>
+      <span class="li"><span class="chip chip-warn">확인필요</span> 공식 페이지에 표기 없음</span>
+      <span class="li"><span class="chip chip-tier">구간별</span> 거래금액에 따라 요율이 달라짐</span>
+      <span class="li"><span class="chip chip-auto">자동</span> 신청 없이 적용</span>
+      <span class="li"><span class="chip chip-apply">신청</span> 직접 신청해야 적용</span>
+    </div>
+    <div class="notes" id="notes-master"></div>
+  </div>
+
+  <!-- 구간별 상세 -->
+  <div class="card" id="t-tier">
+    <div class="sec-head">
+      <div class="sec-eyebrow">TABLE 02</div>
+      <div class="sec-title">구간별 수수료 상세 (삼성 · 신한)</div>
+      <div class="sec-desc">
+        종합표에서 <strong>구간별</strong>로 표시된 곳입니다. 거래금액이 작을수록 요율이 급격히 올라가고,
+        정액 추가금(+원)이 붙는 구간은 소액 거래에서 특히 불리합니다.
+      </div>
+    </div>
+    <div class="table-wrap">
+      <table class="t">
+        <thead>
+          <tr>
+            <th class="l">증권사 · 매체</th>
+            <th class="l">거래금액 구간</th>
+            <th class="r">요율</th>
+            <th class="r">정액 추가</th>
+            <th class="r">1,000만원 거래 시</th>
+          </tr>
+        </thead>
+        <tbody id="tb-tier"></tbody>
+      </table>
+    </div>
+    <div class="notes">
+      <div class="note-item"><span class="nm">공통</span><span>표기 요율에 유관기관제비용이 포함된 값입니다. 삼성증권은 MTS·HTS 동일 구간이 적용되고, 신한투자증권은 MTS만 0.1891639% 단일 요율입니다.</span></div>
+    </div>
+  </div>
+
+  <!-- 조건부 무료·할인 -->
+  <div class="card" id="t-perk">
+    <div class="sec-head">
+      <div class="sec-eyebrow">TABLE 03</div>
+      <div class="sec-title">조건부 무료·할인 제도 (상시)</div>
+      <div class="sec-desc">
+        신규계좌 이벤트가 아니라, <strong>거래 방식이나 계좌 종류 때문에 요율이 달라지는 제도</strong>입니다.
+        토스 주식모으기처럼 <strong>매수만 무료</strong>이거나 KB 글로벌원마켓처럼 <strong>특정 계좌만 신청 가능</strong>한 경우가 많아
+        조건을 그대로 옮겨 적었습니다. 적립식으로 ETF를 모으시는 분들은 이 표가 위 표준 요율보다 중요할 수 있습니다.
+      </div>
+    </div>
+    <div class="table-wrap">
+      <table class="t">
+        <thead>
+          <tr>
+            <th class="l">증권사</th>
+            <th>구분</th>
+            <th class="l">제도명</th>
+            <th class="l">혜택</th>
+            <th class="l">조건 · 한도</th>
+            <th>기간</th>
+          </tr>
+        </thead>
+        <tbody id="tb-perk"></tbody>
+      </table>
+    </div>
+    <div class="legend">
+      <span class="li"><span class="chip chip-auto">적립·소수점</span> 적립식·소수점 매수 관련</span>
+      <span class="li"><span class="chip chip-apply">계좌 유형</span> 특정 계좌를 열어야 적용</span>
+      <span class="li"><span class="chip chip-sep">환전</span> 환전 비용 관련</span>
+      <span class="li"><span class="chip chip-warn">주의</span> 오히려 불리하거나 제도가 없는 경우</span>
+    </div>
+    <div class="notes">
+      <div class="note-item"><span class="nm">전 증권사 공통</span><span>상장형수익증권(상장클래스)의 유관기관수수료는 한국거래소·예탁결제원 면제기간인 <b>2025.10.27 ~ 2026.10.26</b> 동안 면제됩니다. 증권사 자체 혜택이 아니라 업계 공통 한시 제도입니다.</span></div>
+      <div class="note-item"><span class="nm">절세계좌 제외</span><span>연금저축·IRP·중개형ISA 전용 우대 요율은 이 표에서 뺐습니다. 미래에셋 다이렉트 ISA·연금저축, 삼성 연금저축 무료, 메리츠 디지털관리 ISA 등 <b>절세계좌만 놓고 비교해야 의미가 있는 제도들</b>이라 별도로 정리하겠습니다.</span></div>
+      <div class="note-item"><span class="nm">여기 없는 곳</span><span>대신·유진·하나·한국투자는 적립식·소수점 전용 무료 제도가 공식 수수료표에서 확인되지 않았습니다. 없다고 단정하기보다 "공시된 제도를 못 찾았다"는 뜻으로 봐주세요.</span></div>
+    </div>
+  </div>
+
+  <!-- 이벤트 상세 -->
+  <div class="card" id="t-event">
+    <div class="sec-head">
+      <div class="sec-eyebrow">TABLE 04</div>
+      <div class="sec-title">신규계좌 수수료 이벤트 상세</div>
+      <div class="sec-desc">
+        <strong>대부분 신규 고객 또는 장기 휴면 고객만 대상</strong>이라, 이미 거래 중인 계좌가 있으면 신청 자격이 없는 경우가 많습니다. 이벤트를 적용하면 대부분 <strong>유관기관제비용 수준(0.0036396% 안팎)</strong>까지 내려갑니다.
+        다만 <strong>신청 필수·기간 한정</strong>이 대부분이라 놓치면 그냥 표준 요율을 내게 됩니다.
+        미국주식 수수료를 깎아주는 이벤트는 <strong>메리츠증권(USD 환전 무료) 외에는 확인되지 않았습니다.</strong>
+      </div>
+    </div>
+    <div class="table-wrap">
+      <table class="t">
+        <thead>
+          <tr>
+            <th class="l">증권사</th>
+            <th>신청</th>
+            <th class="l">혜택 내용</th>
+            <th>혜택 기간</th>
+            <th class="l">대상 · 조건</th>
+            <th>이벤트 기간</th>
+          </tr>
+        </thead>
+        <tbody id="tb-event"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 계산기 -->
+  <div class="card" id="t-calc">
+    <div class="sec-head">
+      <div class="sec-eyebrow">TABLE 05</div>
+      <div class="sec-title">내 거래금액으로 계산해보기</div>
+      <div class="sec-desc">금액을 넣으면 위 표의 요율을 적용해 실제로 내는 돈으로 바꿔 보여드립니다.</div>
+    </div>
+    <div class="calc-grid">
+      <div>
+        <label class="label">1회 거래금액 (원)</label>
+        <input type="number" id="amount" value="10000000" step="1000000" min="0">
+        <div class="input-hint" id="amount-hint">1,000만원</div>
+      </div>
+      <div>
+        <label class="label">시장</label>
+        <div class="segment" id="market-seg">
+          <button data-m="domestic" class="active">국내주식</button>
+          <button data-m="overseas">미국주식</button>
+        </div>
+        <div class="input-hint">&nbsp;</div>
+      </div>
+      <div>
+        <label class="label">주문 매체</label>
+        <div class="segment" id="channel-seg">
+          <button data-ch="mts" class="active">모바일 MTS</button>
+          <button data-ch="hts">PC HTS</button>
+        </div>
+        <div class="input-hint" id="ch-hint">KB·신한은 매체별 차이가 큽니다</div>
+      </div>
+    </div>
+    <div class="table-wrap">
+      <table class="t">
+        <thead id="th-calc"></thead>
+        <tbody id="tb-calc"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 확인 링크 -->
+  <div class="card" id="t-link">
+    <div class="sec-head">
+      <div class="sec-eyebrow">TABLE 06 · 갱신용</div>
+      <div class="sec-title">증권사별 공식 확인 링크</div>
+      <div class="sec-desc">
+        위 표의 모든 수치를 확인한 <strong>원본 페이지 주소</strong>입니다.
+        수수료율이나 이벤트가 바뀌었다는 이야기가 나오면 해당 증권사 링크부터 열어서 대조하시면 됩니다.
+        모두 <strong>2026년 8월 18일 접속 확인</strong>했으며, 증권사가 URL 구조를 바꾸면 끊길 수 있습니다.
+      </div>
+    </div>
+    <div class="table-wrap">
+      <table class="t">
+        <thead>
+          <tr>
+            <th class="l">증권사</th>
+            <th class="l">확인 페이지</th>
+          </tr>
+        </thead>
+        <tbody id="tb-link"></tbody>
+      </table>
+    </div>
+    <div class="notes">
+      <div class="note-item"><span class="nm">갱신 순서</span><span>① 국내 수수료 페이지에서 비대면 계좌 요율과 유관기관제비용 → ② 해외주식 수수료 페이지에서 미국 요율·최소수수료 → ③ 환전 안내에서 우대율 → ④ 이벤트 게시판에서 진행 중 이벤트 확인. 이 순서대로 보시면 표 한 줄이 완성됩니다.</span></div>
+      <div class="note-item"><span class="nm">주의</span><span>키움·KB 일부 페이지와 삼성·NH나무 이벤트 랜딩은 자바스크립트로 그려지는 화면이라, 브라우저로 직접 열어야 내용이 보입니다.</span></div>
+    </div>
+  </div>
+
+  <!-- 인사이트 -->
+  <div class="insight-box">
+    <div class="insight-label">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#D9542B" stroke-width="2"><path d="M12 3l1.9 5.8L20 10l-4.5 3.3L17 20l-5-3.5L7 20l1.5-6.7L4 10l6.1-1.2L12 3z"/></svg>
+      <span class="insight-label-text">KEY INSIGHT</span>
+    </div>
+    <h3 class="insight-title">표를 볼 때 꼭 확인해야 할 세 가지</h3>
+    <p class="insight-desc">
+      <strong>첫째, 계좌 종류.</strong> 같은 증권사라도 비대면으로 연 계좌와 영업점에서 연 계좌는 수수료가 10배 넘게 차이납니다.
+      미래에셋 다이렉트는 0.010%지만 영업점 계좌 온라인 거래는 0.136%, 한국투자 뱅키스는 0.0140527%지만 영업점 계좌는 구간별 0.077~0.497%입니다.
+      이미 계좌가 있다면 내 계좌가 어느 유형인지부터 확인하는 게 먼저입니다.
+    </p>
+    <p class="insight-desc">
+      <strong>둘째, 유관기관제비용.</strong> 키움 0.015%와 유진 0.015%는 같아 보이지만, 키움은 유관기관제비용을 별도로 더 받아 실부담이 0.0186396%입니다.
+      미래에셋 다이렉트도 0.010%가 아니라 0.0136396%가 실제로 나가는 돈입니다. 표기 요율만 비교하면 순서가 뒤바뀝니다.
+    </p>
+    <p class="insight-desc">
+      <strong>셋째, 미국주식은 환전이 본체.</strong> 매매수수료는 대부분 0.25%로 같지만 환전 스프레드는 0.05%부터 1%까지 벌어집니다.
+      기본 스프레드 1%를 그대로 물면 사고팔며 왕복 2%가 나가는데, 이건 매매수수료의 4배입니다.
+      환율우대는 대부분 <strong>신청해야 적용</strong>되니 계좌를 열었다면 환전 우대 신청부터 확인하세요.
+    </p>
+    <div class="insight-cta">
+      <div class="insight-cta-text">📊 계좌 종류별 절세·수수료 정리, 더 알고 싶다면?</div>
+      <a href="https://www.youtube.com/@ttok_jae" target="_blank" rel="noopener" class="cta-link primary">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+        똑재TV 구독하기
+      </a>
+      <a href="https://cafe.naver.com/ttokjae" target="_blank" rel="noopener" class="cta-link secondary">
+        <span class="naver-mark">N</span>
+        평생 ETF 투자 카페 가입
+      </a>
+    </div>
+  </div>
+
+  <div class="source-box">
+    <div class="source-title">📌 데이터 출처와 한계</div>
+    <div class="source-text">
+      · 모든 수치는 <b>2026년 8월 18~19일</b>에 각 증권사 공식 수수료 안내 페이지·이벤트 공지에서 직접 확인한 값입니다.<br>
+      · <b>신규 개설 기준입니다.</b> 이미 보유 중인 계좌는 과거 우대 이력·계좌 등급·개설 채널에 따라 요율이 달라지므로, 각 증권사 앱의 수수료 조회나 고객센터로 <b>개별 확인이 필요합니다.</b><br>
+      · 국내주식은 <b>비대면 일반 위탁계좌</b>의 온라인 주문, 미국주식은 <b>온라인 주문</b> 기준입니다. 영업점 개설 계좌는 요율이 크게 다릅니다.<br>
+      · <b>연금저축·IRP·중개형ISA 등 절세계좌 전용 요율은 포함하지 않았습니다.</b> 절세계좌는 세제 혜택·납입한도·상품 제한이 함께 걸려 있어 수수료만 비교하면 오해가 생깁니다.<br>
+      · <b>NXT(넥스트레이드)</b> 체결분은 대부분 KRX 대비 소폭 인하되지만, 본 표는 <b>KRX 기준</b>입니다.<br>
+      · 환전 수수료는 각 사 공시 우대율을 <b>기준 스프레드 1% 가정</b>에 적용해 환산한 <b>편도 기준</b> 값입니다. 조사해보니 <b>13개사 모두 원본 스프레드를 공시하지 않고 우대율만 공시</b>합니다. 따라서 "95% 우대"와 "60% 우대"를 회사끼리 직접 비교할 수 없습니다 — 원본 스프레드가 다르면 우대율이 낮아도 실제로 더 쌀 수 있습니다. 정확한 비교는 같은 시점에 각 사 앱의 적용환율을 직접 대조하는 방법뿐입니다.<br>
+      · <span class="chip chip-warn">확인필요</span> 표시는 공식 페이지에서 수치를 확인하지 못했거나 자료 간 표기가 상충하는 항목입니다. 해당 증권사에 직접 확인하시기 바랍니다.<br>
+      · <b>회사 규모</b>는 자기자본(연결) 기준이며, 각 사 <b>2026년 반기보고서(2026.06.30, DART 전자공시)</b>에서 확인했습니다.
+      비상장사인 토스증권·카카오페이증권만 DART 조회가 되지 않아 <b>2026.03.31 기준 언론 보도</b> 수치를 썼습니다(기준 시점이 한 분기 다릅니다).
+      증권사는 펀드 운용사가 아니라 통상 'AUM'을 공시하지 않아, 업계 표준인 자기자본을 규모 지표로 삼았습니다.<br>
+      · <b>2025년 말 금융당국의 해외주식 마케팅 자제 권고</b>로 여러 증권사가 환전 우대 이벤트를 조기 종료했습니다. 환전 관련 수치는 특히 변동이 잦으니 실제 환전 직전에 다시 확인하세요.<br>
+      · 증권거래세·농어촌특별세·해외주식 양도소득세 등 <b>세금은 포함하지 않았습니다.</b> 수수료만 정리한 표입니다.
+    </div>
+  </div>
+
+  <footer>
+    ※ 본 자료는 <b>신규 계좌 개설을 기준</b>으로 한 정보 제공용 비교표이며, 특정 증권사 가입을 권유하지 않습니다.<br>
+    이미 사용 중인 계좌의 실제 수수료는 해당 증권사에서 직접 확인하세요.<br>
+    수수료율과 이벤트 조건은 수시로 변경되므로 실제 거래 전 반드시 해당 증권사 공식 안내를 확인하세요.
+  </footer>
+
+</div>
+
+<script>
+// ============================================================
+// 데이터 — 2026-08-18 각 증권사 공식 수수료 안내 확인 기준
+// ============================================================
+var MISC_KRX = 0.0036396; // 한국거래소 유관기관제비용 (유가·코스닥·코넥스)
+
+// 회사 규모 — 자기자본(연결) / 총자산(연결), 단위 조원
+// 2026.06.30 반기보고서(DART) 기준. 토스·카카오페이는 비상장이라 2026.03.31 언론 보도 기준.
+var SIZE = {
+  mirae:    { rank:1,  eq:16.25, ta:195.61, asOf:'2026.06' },
+  kis:      { rank:2,  eq:13.90, ta:147.16, asOf:'2026.06' },
+  namuh:    { rank:3,  eq:10.87, ta:114.68, asOf:'2026.06' },
+  meritz:   { rank:4,  eq:9.05,  ta:107.74, asOf:'2026.06' },
+  samsung:  { rank:5,  eq:8.66,  ta:106.17, asOf:'2026.06' },
+  kb:       { rank:6,  eq:8.22,  ta:102.81, asOf:'2026.06' },
+  kiwoom:   { rank:7,  eq:7.58,  ta:108.34, asOf:'2026.06' },
+  hana:     { rank:8,  eq:6.80,  ta:75.55,  asOf:'2026.06' },
+  shinhan:  { rank:9,  eq:6.04,  ta:72.17,  asOf:'2026.06' },
+  daishin:  { rank:10, eq:4.56,  ta:42.59,  asOf:'2026.06' },
+  eugene:   { rank:11, eq:1.24,  ta:15.31,  asOf:'2026.06' },
+  toss:     { rank:12, eq:0.72,  ta:9.36,   asOf:'2026.03' },
+  kakaopay: { rank:13, eq:0.23,  ta:null,   asOf:'2026.03' }
+};
+
+// miscIncluded: true=위탁수수료율에 포함 / false=별도 부과 / null=공식 확인 불가(포함으로 가정)
+var DOMESTIC = [
+  { id:'namuh', name:'NH투자증권', acct:'나무 앱 개설', mts:0.01, hts:0.01,
+    misc:MISC_KRX, miscIncluded:true,
+    note:'유관기관제비용 포함. 공식 안내에 "고객 최종수수료는 당사 표준수수료율로 정산"되며 NXT 체결 시 KRX 거래수수료 차액분을 자동 차감한다고 명시돼 있습니다. 나무 자체 채널(나무 앱·HTS·나무MAX)에서만 적용됩니다. NH투자증권 채널로 거래하면 NH 표준 요율입니다.' },
+
+  { id:'meritz', name:'메리츠증권', acct:'Super365(비대면)', mts:0.009, hts:0.009,
+    misc:MISC_KRX, miscIncluded:true,
+    note:'Super365는 온라인 전용 계좌로 디지털금융센터가 관리점이며 투자상담은 제공되지 않습니다. 일반 온라인 계좌는 구간별 0.078132~0.198132%로 크게 다릅니다. 현재는 이벤트로 유관기관제비용까지 0원입니다(아래 이벤트 표 참고).' },
+
+  { id:'mirae', name:'미래에셋증권', acct:'다이렉트(비대면)', mts:0.010, hts:0.010,
+    misc:MISC_KRX, miscIncluded:false,
+    note:'다이렉트 계좌 전용 요율입니다. 영업점 선택 계좌는 온라인 0.136%, 오프라인 0.486%.' },
+
+  { id:'kis', name:'한국투자증권', acct:'뱅키스(비대면)', mts:0.0140527, hts:0.0140527,
+    misc:MISC_KRX, miscIncluded:true,
+    note:'영업점 계좌는 구간별 0.0771487~0.4971487%. NXT 체결은 0.0130527%.' },
+
+  { id:'hana', name:'하나증권', acct:'비대면·은행개설', mts:0.0141639, hts:0.0141639,
+    misc:MISC_KRX, miscIncluded:true,
+    note:'이벤트 신청 없이 계좌 유형만으로 상시 적용됩니다. 영업점 계좌(G등급)는 구간별 0.078~0.496%.' },
+
+  { id:'kakaopay', name:'카카오페이증권', acct:'모바일 전용', mts:0.015, hts:0.015,
+    misc:MISC_KRX, miscIncluded:true, minFee:1, mobileOnly:true,
+    note:'최소수수료 1원. NXT 체결은 0.014%.' },
+
+  { id:'eugene', name:'유진투자증권', acct:'비대면계좌', mts:0.015, hts:0.015,
+    misc:MISC_KRX, miscIncluded:true,
+    note:'신규 개설 시 1년간 0.0049%가 신청 없이 자동 적용됩니다.' },
+
+  { id:'toss', name:'토스증권', acct:'모바일 전용', mts:0.015, hts:0.015,
+    misc:MISC_KRX, miscIncluded:false, mobileOnly:true,
+    note:'유관기관제비용 별도 부과. 공식 고지문에 "거래로 인해 발생된 세금 및 제비용은 고객 부담"으로 명시돼 있고, 주식모으기 매수 건에 한해서만 유관기관수수료를 회사가 부담합니다. 2025.12~2026.6.30 국내주식 수수료 무료 이벤트는 종료됐습니다. NXT 체결은 0.014%.' },
+
+  { id:'daishin', name:'대신증권', acct:'크레온 알뜰한', mts:0.015, hts:0.015,
+    misc:MISC_KRX, miscIncluded:true,
+    note:'유관기관제비용 포함. 공식 이벤트 문구가 "국내주식 수수료 0%(유관비용 포함)" → "이후 평생우대 혜택(유관비용 부과) 0.0036396%"로 구조를 명시합니다. 일반 사이보스 계좌는 MTS 0.1972959%, HTS 구간별 0.0772959~0.4972959%로 크게 다릅니다.' },
+
+  { id:'kiwoom', name:'키움증권', acct:'영웅문(비대면)', mts:0.015, hts:0.015,
+    misc:MISC_KRX, miscIncluded:false,
+    note:'유관기관제비용을 별도로 더 받습니다. 증권통 등 제휴 매체는 0.05%.' },
+
+  { id:'kb', name:'KB증권', acct:'비대면계좌', mts:0.12, hts:0.015,
+    misc:0.0044792, miscIncluded:true,
+    note:'유관기관제비용 포함(공식 표기 "KRX·NXT 포함"). KB가 공시하는 유관기관수수료는 0.0044792%로 KRX 원가 0.0036396%보다 높은데 차액의 구성은 공시돼 있지 않습니다. MTS(M-able) 0.12% / HTS 0.015%로 8배 차이납니다. 매체 선택에 특히 주의하세요.' },
+
+  { id:'samsung', name:'삼성증권', acct:'온라인(구간별)',
+    tiers:[
+      {max:500000, rate:0.497216, add:0, label:'50만원 미만'},
+      {max:10000000, rate:0.147216, add:1500, label:'50만원 ~ 1천만원'},
+      {max:50000000, rate:0.127216, add:3000, label:'1천만원 ~ 5천만원'},
+      {max:100000000, rate:0.117216, add:0, label:'5천만원 ~ 1억원'},
+      {max:300000000, rate:0.097216, add:0, label:'1억원 ~ 3억원'},
+      {max:Infinity, rate:0.077216, add:0, label:'3억원 이상'}
+    ],
+    misc:MISC_KRX, miscIncluded:true,
+    note:'POP HTS·MTS 동일 구간 요율입니다. 이벤트 종료 후에는 0.015%가 적용된다는 안내가 있습니다(2차 출처).' },
+
+  { id:'shinhan', name:'신한투자증권', acct:'비대면 종합', mts:0.1891639,
+    tiersHts:[
+      {max:500000, rate:0.4991639, add:0, label:'50만원 이하'},
+      {max:3000000, rate:0.1491639, add:1500, label:'50만원 ~ 300만원'},
+      {max:30000000, rate:0.1391639, add:2000, label:'300만원 ~ 3천만원'},
+      {max:50000000, rate:0.1291639, add:0, label:'3천만원 ~ 5천만원'},
+      {max:100000000, rate:0.1191639, add:0, label:'5천만원 ~ 1억원'},
+      {max:200000000, rate:0.0991639, add:0, label:'1억원 ~ 2억원'},
+      {max:Infinity, rate:0.0891639, add:0, label:'2억원 초과'}
+    ],
+    misc:MISC_KRX, miscIncluded:true,
+    note:'별도 상품인 신한 SOL LINK 계좌는 국내 0.01%·미국 0.07%, S-Lite/S-Lite+는 국내 0.013%로 훨씬 저렴합니다.' }
+];
+
+// prefRate = (1 - 우대율). spreadRate가 있으면 실제 스프레드 직접 표기.
+// fxTiers: 시간대·조건에 따라 환전 스프레드가 달라지는 곳 (첫 항목이 대표값)
+var OVERSEAS = {
+  meritz:   { rate:0.07, minUSD:0,    spreadRate:0.00, prefLabel:'USD 100% 우대',
+              rateTiers:[
+                { label:'~2026.01.04 개설',  disp:'무료' },
+                { label:'2026.01.05~ 개설',  disp:'0.07%' }
+              ],
+              fxTiers:[
+                { label:'USD · ~2026.12.31', spread:0.00, pref:'100% 우대' },
+                { label:'USD · 2027년~ 예정', spread:0.05, pref:'95% 우대' },
+                { label:'CNY·HKD·JPY',       spread:0.20, pref:'80% 우대' }
+              ],
+              warn:'일반(비Super365) 계좌의 기본 환율우대율 미확인',
+              note:'Super365 기준. <b>2026.01.04 이전에 개설한 계좌는 미국주식(소수점 포함)까지 무료</b>이고, 2026.01.05 이후 개설분부터 0.07%(소수점 0.25%)가 붙습니다. 이전 개설 고객이라도 2026.01.05 이후 추가 개설한 계좌로 거래하면 0.07% 적용. USD 환전 무료는 2026.12.31까지이고 이후 95% 우대로 전환 예정. CNY·HKD·JPY는 80% 우대. 매도 시 SEC Fee 0.00206% 별도.' },
+  toss:     { rate:0.1,  minUSD:0,    spreadRate:0.05, prefLabel:'95% 할인',
+              fxTiers:[
+                { label:'정규시간 09:00~15:30', spread:0.05, pref:'95% 할인' },
+                { label:'시간외·주말·공휴일',   spread:0.50, pref:'50% 할인' }
+              ],
+              note:'환전 시간대 기준은 국내 영업일이며 2026.4.22부터 적용. 체결금액 $10 이하는 매매수수료 없음. 주식모으기로 매수하면 매수 수수료가 무료지만 매도할 때는 수수료가 붙습니다.' },
+  eugene:   { rate:0.25, minUSD:0, prefRate:0.10, prefLabel:'90% 우대',
+              note:'미국은 최소수수료 조항 자체가 없습니다(일본·홍콩은 "최소수수료 없음"으로 명시). 디지털 계좌 이용 고객 대상 전통화(USD·HKD·CNY·JPY) 기본우대 90%.' },
+  kakaopay: { rate:0.1,  minUSD:0.01, spreadRate:0.05, prefLabel:'95% 우대(이벤트)',
+              fxTiers:[
+                { label:'영업일 09:00~16:00', spread:0.05, pref:'95% 우대 · 이벤트' },
+                { label:'그 외 시간·주말',    spread:1.00, pref:'우대 없음' }
+              ],
+              warn:'신청 필요 여부 미공시 · 사전고지 없이 변경 가능',
+              note:'95% 우대는 2026.03.06 공지로 유효가 재확인됐으나 <b>종료일이 정해져 있지 않고 "사전고지 없이 변경될 수 있음"</b>이 명시돼 있습니다. 신청이 필요한지는 어느 공식 문서에도 없습니다. 기본 스프레드 1%. 시간외 환전은 스프레드를 적용한 뒤 다음 영업일 09:30경 실시간 환율로 다시 정산해 차액을 원화로 환급·징수합니다. 매매기준환율은 제휴은행(신한·하나) 고시 기준.' },
+  namuh:    { rate:0.25, minUSD:0,    prefRate:0.95, prefLabel:'5% 우대',
+              note:'USD 일반고객 5% 우대(환전 1천만원 미만). 고객등급·금액별로 30~80%까지 우대.' },
+  samsung:  { rate:0.25, minUSD:10, prefRate:1.00, prefLabel:'기본(우대 없음)',
+              note:'<b>미국주식 최소수수료 온라인 USD 10 · 오프라인 USD 20</b>(주문 건당)이 있습니다. 소액으로 자주 사면 0.25%보다 이 최소수수료가 더 크게 걸립니다. 환전 이벤트 신청 시 USD 95% 우대(스프레드 0.05%).' },
+  kb:       { rate:0.25, minUSD:0,    prefRate:1.00, prefLabel:'기본(우대 없음)',
+              note:'글로벌원마켓 서비스를 신청한 계좌는 기준환율 중간값이 적용돼 환전비용이 사실상 없습니다.' },
+  shinhan:  { rate:0.25, minUSD:0.01, prefRate:1.00, prefLabel:'기본(우대 없음)',
+              note:'미국주식 최소수수료 $0.01.' },
+  daishin:  { rate:0.25, minUSD:0,    prefRate:1.00, prefLabel:'우대 없음',
+              warn:'현행 환전 우대율 자체가 미공시',
+              note:'<b>「온라인 환전수수료 95% 할인」 이벤트는 2023년판(~2023.12.29)을 끝으로 종료</b>됐고 2024년 이후 재개 기록이 없습니다. 2026.08 신설된 일반환전 서비스 공지에도 "종합계좌의 우대율 적용"이라고만 적혀 있어 실제 우대율을 알 수 없습니다. 매수 최소주문금액 $10. SEC Fee는 2025.05.13 매매분부터 미부과.' },
+  mirae:    { rate:0.25, minUSD:0,    prefRate:null, prefLabel:'우대 없음 · 전화 신청제',
+              warn:'기준 스프레드 미공시 — 우대율을 %로 환산할 수 없음',
+              note:'<b>기본 우대가 없고, 우대를 받으려면 고객센터(1588-6800)에 전화로 신청</b>해야 합니다. HTS·MTS에서는 신청이 안 되며 1년 단위 연장이 필요합니다. 자사 자료(2020년)에 기준 스프레드가 달러당 5원으로 나오는데 현재도 유효한지는 확인되지 않았습니다. 미국주식 최소수수료는 없습니다.' },
+  kis:      { rate:0.25, minUSD:0,    prefRate:0.40, prefLabel:'60% 우대 · 자동',
+              note:'<b>실시간환전 시 USD 기준 60% 기본우대가 신청 없이 자동 적용</b>됩니다(공식 수수료안내 환전우대 섹션). 고객등급(VIP·골드)·자산 요건을 채우면 80%, 거액(USD 5만·10만 이상)은 80% 초과도 가능하나 신청제입니다. 추가우대 유지 조건은 골드 등급 + 예탁자산 1억원. 통화별로 우대율이 다르고 외환시장 급변동 시 우대가 빠질 수 있습니다. 환전 가능시간 USD 09:00~23:30.' },
+  kiwoom:   { rate:0.25, minUSD:0,    prefRate:null, prefLabel:'0% · 신청 시 최대 95%',
+              warn:'기준 스프레드 미공시 · 이벤트 신청 가능 여부 불명',
+              note:'<b>이벤트를 신청하지 않은 계좌는 우대가 없습니다.</b> 「해외주식 0.07% + 환전우대 최대 95%」 이벤트는 비대면계좌 대상이고 <b>계좌마다 따로 신청</b>해야 하며 신청일부터 1년, 거래가 있으면 자동 연장됩니다. 통화별로 우대율이 다르다고만 하고 표는 없습니다. 2025년 말 금융당국 권고로 증권사 환전 이벤트가 대거 조기 종료돼 지금도 신청 가능한지 확인이 필요합니다. 일반 매매 최소수수료 없음.' },
+  hana:     { rate:0.25, minUSD:0,    prefRate:null, prefLabel:'미확인',
+              warn:'하나증권 본체 계좌의 환전 스프레드·우대율 미공시',
+              note:'최소수수료 상충은 해소됐습니다 — 구 페이지(USD 5)는 2021년 5월 최종수정된 폐기본이고 현행 수수료표에는 미국 최소수수료 조항이 없습니다. 환전은 본체 계좌 수치가 공시되지 않았고, 별도 상품인 <b>하나 해외주식전용 통장</b>(하나은행 연계)은 기본 50% 우대 + 이벤트로 입금 100%·출금 80% 우대(~2026.12.31)이며 정규시간 +0.2원 / 시간외 +0.5~1.0원 구조입니다.' }
+};
+
+var EVENTS = {
+  meritz:   { type:'auto', hi:true, short:'국내주식 <b>완전 무료</b> + USD 환전 무료<br><span class=\'mute\'>26.1.4 이전 개설분은 미국주식도 무료</span>', cap:'누구나(기존 고객 포함) · 월 약정 200억원 한도', period:'2026.06.30 ~ 12.31',
+              benefit:'국내주식 <b>완전 무료</b> + <b>USD 환전 무료</b><br><span class="mute">유관기관제비용까지 회사가 부담</span>',
+              dur:'~2026.12.31',
+              cond:'<b>신규·기존 고객 구분 없이 누구나</b>(개인 한정, 법인 제외) — Super365 계좌 개설만 하면 자동 적용<br><b>2026.01.04 이전 개설 계좌는 미국주식(소수점 포함)까지 무료</b>, 2026.01.05 이후 개설분은 미국주식 0.07%(소수점 0.25%)<br>월 약정액 200억원까지 무료, 초과 시 D+2영업일~월말 기본요율(0.009%), 익월 1일 자동 복원<br>K-OTC 등 비상장 주식·오프라인·ARS·반대매매 제외<br>종료 후 국내 0.009% · 미국 0.07% · USD 환율우대 95%로 전환' },
+  namuh:    { type:'auto', hi:true, short:'국내주식 <b>완전 무료</b> 24개월', cap:'생애 최초·휴면 · 연 누적 1.5조원 한도', period:'2026.07.01 ~ 12.31 개설분',
+              benefit:'국내주식 수수료 <b>완전 무료</b><br><span class="mute">유관기관제비용까지 회사가 부담</span>',
+              dur:'24개월',
+              cond:'생애 최초 신규 고객 + 휴면 고객<br>나무 MTS/HTS/나무MAX 주문 한정 · 1인 1계좌<br>연 누적 거래 1.5조원 초과 시 해당 연도 말까지 중단' },
+  eugene:   { type:'auto', hi:true, short:'국내주식 <b>0.0049%</b> 1년', cap:'비대면 최초 신규만 · 자동 적용', period:'2026.01.01 ~ 12.31',
+              benefit:'국내주식 <b>0.0049%</b><br><span class="mute">선물 0.001% · 옵션 0.05% 동반 우대</span>',
+              dur:'1년',
+              cond:'비대면 종합계좌 최초 신규 개설 고객(법인 제외)<br>계좌 개설일부터 자동 적용<br>개설 후 관리점·관리자 변경 시 미적용' },
+  shinhan:  { type:'apply', short:'국내주식 <b>완전 무료</b> 6개월', cap:'30일 내 개설 최초·6개월 휴면 · 월 500억원 한도', period:'2026.04.01 ~ 12.31',
+              benefit:'국내주식 <b>완전 무료</b><br><span class="mute">첫 6개월 중 거래 있으면 6개월 자동 연장</span>',
+              dur:'6개월<br>(+6개월)',
+              cond:'30일 이내 개설한 생애 최초 고객 또는 6개월 무거래 휴면 고객<br>SOL증권 앱에서 신청 · 마케팅 동의 필수<br>무료기간 중 월 거래대금 500억원 한도' },
+  mirae:    { type:'apply', short:'90일 <b>0%</b> → 0.0036396%', cap:'최초·휴면 · 개설 후 90일 내 신청', period:'2026.07.01 ~ 12.31 신청분',
+              benefit:'90일간 <b>0%</b> → 이후 <b>0.0036396%</b><br><span class="mute">거래 시 1년 단위 연장 가능</span>',
+              dur:'90일 +<br>1년(연장)',
+              cond:'최초 신규 또는 휴면 고객의 다이렉트 주식계좌<br>개설 후 90일 이내 신청 · 1인 1회<br>영업점 선택 계좌·CMA·ISA·연금 제외' },
+  daishin:  { type:'apply', short:'1개월 <b>0%</b> → <b>평생우대</b>', cap:'생애 첫 비대면·12개월 미거래 · 신청 필수', period:'2026.01.02 ~ 12.31',
+              benefit:'1개월 <b>0%</b> → 이후 <b>평생우대</b><br><span class="mute">유관기관제비용만 부과(KRX 0.0036396%)</span>',
+              dur:'1개월 +<br>평생',
+              cond:'2026.1.1 이후 생애 첫 비대면 개설 또는 12개월 미거래 고객<br>자동신청 아님 · 1인 1계좌<br>신청한 계좌·매체에서만 적용, 은행제휴계좌 제외' },
+  samsung:  { type:'apply', short:'국내주식 <b>0.0036396%</b> 366일', cap:'비대면 신규·휴면 · 신청 필수 · 1인 1계좌', period:'2026.07.01 ~ 12.31',
+              benefit:'국내주식 <b>0.0036396%</b><br><span class="mute">종료 후 0.015% 적용</span>',
+              dur:'366일',
+              cond:'2026.7.1 이후 비대면 종합계좌 신규 개설 + 요건 충족 휴면 고객<br>신청 필수 · 1인 1계좌' },
+  kis:      { type:'apply', short:'국내주식 <b>0.0036396%</b> 최대 180일', cap:'뱅키스 01 최초 신규 · 개설 후 30일 내 신청', period:'2026.07.01 ~ 12.31',
+              benefit:'국내주식 <b>0.0036396%</b><br><span class="mute">해외주식은 우대 미적용</span>',
+              dur:'90일<br>(최대 180일)',
+              cond:'뱅키스(BanKIS) 01 주식계좌 최초 신규 고객<br>개설 후 30일 이내 신청 · 마케팅 동의 필수<br>종료 전후 14일 내 연장신청 시 90일 추가(1회)' },
+  kiwoom:   { type:'apply', short:'위탁수수료 <b>할인</b> 6개월', cap:'최초 개설 또는 개설 1개월 내 · 신청 필수', period:'2025.12.26 ~ 2026.12.25',
+              benefit:'국내주식 위탁수수료 <b>할인</b><br><span class="mute">유관기관제비용은 그대로 부과</span>',
+              dur:'6개월<br>(비대면)',
+              cond:'이벤트 기간 최초 개설 또는 개설 1개월 이내 고객<br>비대면 6개월 / 은행·영업부 계좌 3개월<br>프리미엄서비스(키워드림·뉴지스탁 등) 이용 시 혜택 소멸' },
+  kb:       { type:'apply', short:'국내주식 <b>0.0044792%</b> 평생', cap:'비대면 직개설 신규·장기미거래 · 개설 후 3개월 내 신청', period:'2026.06.01 ~ 2027.05.31',
+              benefit:'국내주식 <b>0.0044792%</b> 평생<br><span class="mute">ELW·ETF·ETN 0.0050483% · K-OTC 0.0990000%</span>',
+              dur:'평생',
+              cond:'비대면 위탁 최초 신규 또는 장기미거래 고객<br>계좌개설일로부터 3개월 이내 신청<br><b>M-able 앱 또는 start.kbsec.com에서 직접 개설해야 합니다</b> — KB스타뱅킹·카카오뱅크·토스뱅크 등 제휴 앱 경유 은행연계 계좌는 제외<br>은행연계 계좌는 요율이 같은 별도 「5년 혜택」 이벤트가 있습니다(적용기간만 5년)' },
+  hana:     { type:'check', short:'매수쿠폰 1만~2만원<br><span class="mute">수수료 우대 아님</span>', cap:'이벤트 경유 비대면 개설 신규 · 쿠폰 지급형', period:'2026.05.07 ~ 08.31',
+              benefit:'국내주식 <b>매수쿠폰 1만~2만원</b><br><span class="mute">수수료 우대형이 아닌 쿠폰 지급형</span>',
+              dur:'즉시 지급',
+              cond:'이벤트 페이지를 통해 비대면 개설한 신규 손님(법인·외국인 제외)<br>하나증권은 이벤트 없이도 비대면·은행개설 온라인계좌에 상시 0.0141639% 적용' },
+  toss:     { type:'none', short:'진행 중 이벤트 <b>미확인</b>', cap:'해당 없음', period:'2026.08.18 확인 기준',
+              benefit:'진행 중인 신규계좌 수수료 이벤트 <b>미확인</b>',
+              dur:'–',
+              cond:'2025.12~2026.6.30 국내주식 수수료 무료 이벤트는 2026년 6월 30일 종료<br>현재 확인되는 건 &quot;주식 옮기기&quot; 리워드 이벤트(수수료 우대 아님)<br>앱 내 별도 이벤트가 있을 수 있어 앱에서 확인 권장' },
+  kakaopay: { type:'none', short:'진행 중 이벤트 <b>미확인</b>', cap:'해당 없음', period:'2026.08.18 확인 기준',
+              benefit:'진행 중인 신규계좌 수수료 이벤트 <b>미확인</b>',
+              dur:'–',
+              cond:'공식 웹사이트에 이벤트 게시판이 없어 앱·카카오톡 내에서만 안내<br>공지사항·회사소식에서 진행 중 이벤트 확인 불가<br>앱에서 직접 확인 권장' }
+};
+
+// ============================================================
+// 조건부 무료·할인 — 신규계좌 이벤트가 아니라, 거래 방식·계좌 종류 때문에
+// 요율이 달라지는 제도. kind: buy(적립·소수점) / acct(계좌유형) / fx(환전) / caution(주의)
+// ※ 연금저축·IRP·중개형ISA 등 절세계좌 전용 요율은 이 표에서 제외 (별도 정리 예정)
+// ============================================================
+var PERKS = [
+  { id:'toss', kind:'buy', name:'주식모으기', benefit:'매수 수수료 <b>무료</b>',
+    cond:'국내 <b>1천주 이하 & 합산 1억원 이하</b> / 해외 <b>1천주 이하 & 합산 10만달러 이하</b><br>설정·주문 시점 기준. <b>매도할 때는 수수료가 붙습니다</b><br>주식모으기 매수 건에 한해 <b>유관기관수수료도 토스가 부담</b>합니다(일반 매수는 고객 부담)', term:'상시' },
+  { id:'toss', kind:'acct', name:'협의수수료 1안', benefit:'국내주식 수수료 <b>무료</b>',
+    cond:'총자산 1억원↑ 또는 거래금액 2억원↑ 또는 해외 거래금액 1.5억원↑<br>신청 접수는 영업일 08:00~13:00', term:'상시 · 6개월마다 재신청' },
+
+  { id:'kiwoom', kind:'buy', name:'주식더모으기', benefit:'미국 소수점 <b>매수 수수료 + 환전 수수료 0원</b>',
+    cond:'매일·매주·매월 주기로 설정 금액만큼 자동 매수 · <b>최소 주문금액 2,000원</b><br>상한 한도는 공시돼 있지 않습니다(하한만 존재)<br><b>무료는 매수만</b> — 매도는 소수점 매도 요율 0.1%(최소 $0.01)가 붙습니다<br>주문가격은 실행 시점 당일 현재가 +3%까지 허용',
+    term:'상시' },
+  { id:'kiwoom', kind:'buy', name:'미국 소수점매매', benefit:'0.1% <span class="mute">(일반 0.25%)</span>',
+    cond:'최소수수료 $0.01', term:'상시' },
+  { id:'kiwoom', kind:'acct', name:'국내시장복귀계좌(RIA)', benefit:'유관기관제비용만 <b>0.0036396%</b>',
+    cond:'제휴매체(증권통·증권플러스)·ARS·키움금융센터 제외', term:'한시 · 2026.03.23~12.31' },
+
+  { id:'namuh', kind:'buy', name:'국내소수점 적립식서비스', benefit:'<b>0.01%</b> <span class="mute">(소수점 일반 0.015%)</span>',
+    cond:'나무 채널 기준. NH투자증권 본체 계좌의 국내주식 모으기는 일반 요율 그대로입니다', term:'상시' },
+
+  { id:'samsung', kind:'buy', name:'소수단위거래', benefit:'0.12% 균일',
+    cond:'온라인·오프라인·ARS 동일. 50만원 미만 일반 요율(0.497216%)보다 유리', term:'상시' },
+
+  { id:'kb', kind:'fx', name:'글로벌 원마켓', benefit:'<b>환전수수료 없음</b>',
+    cond:'한국·미국·중국·홍콩·일본·베트남 6개 시장. 매수·매도 중간값 결제라 스프레드 없음<br>일반위탁(01)·외화전용계좌 <b>신청 불가</b> · 해외주식적립식 등록계좌 불가 · 미국은 <b>95% 금액까지만 매수</b>', term:'상시' },
+  { id:'kb', kind:'acct', name:'maSter 클럽 STAR 특화수수료', benefit:'0.01~0.015%',
+    cond:'비대면계좌 + STAR수수료 신청 + <b>HTS 주문만</b>. 스탁론·연금저축·ISA 신청 불가', term:'상시' },
+  { id:'kb', kind:'acct', name:'은행연계 계좌 5년 혜택', benefit:'국내주식 <b>0.0044792%</b>',
+    cond:'KB스타뱅킹·카카오뱅크·토스뱅크 등 <b>제휴 앱으로 개설한 은행연계 계좌</b> 대상<br>요율은 평생혜택과 같지만 <b>적용기간이 5년</b>입니다. 평생혜택을 받으려면 M-able 앱이나 start.kbsec.com에서 직접 열어야 합니다', term:'5년 · 2026.06.01~2027.05.31 개설분' },
+  { id:'kb', kind:'caution', name:'국내주식 소수점 <b>주의</b>', benefit:'할인 아님 — <b>매도 시 0.23% 추가</b>',
+    cond:'매수는 회차별 합산 1천만원 이하만 가능', term:'상시' },
+
+  { id:'shinhan', kind:'acct', name:'신한 SOL LINK 계좌', benefit:'국내 <b>0.01%</b> · 미국 <b>0.07%</b>',
+    cond:'슈퍼SOL 앱에서 개설하는 은행-증권 통합계좌. 온라인 주문 한정<br>소수점도 국내 0.01%·미국 0.07% 동일', term:'상시' },
+  { id:'shinhan', kind:'acct', name:'S-Lite / S-Lite Plus', benefit:'국내 <b>0.013%</b>',
+    cond:'금액 무관 · HTS/WEB/MTS. 카카오스탁 S-Lite는 0.015%, 증권통은 0.05%', term:'상시' },
+  { id:'shinhan', kind:'acct', name:'프로페셔널 Special', benefit:'유관기관제비용만 부과',
+    cond:'월 온라인 주식거래금액 <b>20억원 초과</b>일 익일부터 해당 월말까지', term:'상시' },
+
+  { id:'meritz', kind:'caution', name:'비대면 평생우대 계좌', benefit:'국내 <b>0.0036396%</b> — <b>지금은 신규 취득 불가</b>',
+    cond:'이 요율을 주던 이벤트는 <b>2022.03.01~12.31로 이미 종료</b>됐습니다. 수수료표에 남아 있는 건 <b>당시 가입자에게 계속 적용되는 잔존 요율</b>을 고지하는 것이고, 2026년에 새로 계좌를 열어서는 받을 수 없습니다<br>ELW·ETF·ETN·BDC·상장형수익증권은 0.0042087%<br>당시 이벤트 원문에 <b>"Super365 계좌는 평생우대 혜택이 적용되지 않으며 별도의 수수료 체계가 적용됩니다"</b>라고 명시 — 둘은 상호배타적입니다',
+    term:'2022년 종료 · 기존 가입자만' },
+  { id:'meritz', kind:'acct', name:'Super365 <b>개설일에 따라 혜택이 다릅니다</b>', benefit:'미국주식 <b>무료</b> 여부가 갈립니다',
+    cond:'<b>2026.01.04 이전 개설 계좌</b> → 국내주식 + <b>미국주식(소수점 포함)</b> + USD환전 <b>모두 무료</b><br>' +
+         '<b>2026.01.05 이후 개설 계좌</b> → 국내주식 + USD환전만 무료, <b>미국주식은 0.07%</b>(소수점 0.25%)<br>' +
+         '※ 2026.01.04 이전 개설 고객이라도 <b>2026.01.05 이후 추가로 연 계좌</b>로 미국주식을 거래하면 0.07%가 붙습니다<br>' +
+         '※ 월 200억원 한도 합산 대상도 다릅니다 — 25.5.1~26.1.4 개설분은 <b>국내+미국 합산</b>, 26.1.5~ 개설분은 <b>국내만</b><br>' +
+         '※ <b>2025.04.30 이전</b> Super365 개설 이력이 있으면 이후 추가 개설분에도 200억원 한도가 적용되지 않습니다',
+    term:'한시 · ~2026.12.31' },
+  { id:'meritz', kind:'acct', name:'Super RIA 계좌', benefit:'국내 + <b>미국주식까지 무료</b>',
+    cond:'오프라인 주문은 기존 요율', term:'한시 · ~2026.12.31' },
+
+  { id:'mirae', kind:'caution', name:'소수점·적립식 자동주문', benefit:'우대 <b>없음</b> — 일반 요율',
+    cond:'서비스는 있으나 수수료 우대 규정이 없습니다', term:'–' },
+
+  { id:'daishin', kind:'acct', name:'국내시장복귀계좌(RIA) 해외주식', benefit:'매도 <b>0.07%</b> <span class="mute">(일반 0.25~0.30%)</span>',
+    cond:'HTS·CYBOS Touch 주문 · <b>매도에만 적용</b>', term:'상시' },
+
+  { id:'daishin', kind:'caution', name:'환전 우대', benefit:'현재 우대 <b>없음</b> · 우대율 미공시',
+    cond:'「온라인 환전수수료 95% 할인」은 2023년판(~2023.12.29)이 마지막이고 2024년 이후 재개 기록이 없습니다<br>2026.08 신설된 일반환전 서비스 공지에도 "종합계좌의 우대율 적용"이라고만 적혀 있어 실제 수치를 알 수 없습니다', term:'–' },
+  { id:'eugene', kind:'acct', name:'매직스플릿 제휴서비스', benefit:'온라인 <b>0.014%</b>',
+    cond:'대상: 주식·ETF·ETN. 증권플러스 for Kakao 등 다른 제휴서비스는 오히려 0.1%', term:'상시' },
+  { id:'eugene', kind:'fx', name:'환전우대', benefit:'우대율 <b>90%</b>',
+    cond:'<b>디지털 계좌 이용 고객에 한함</b> · 전통화(USD·HKD·CNY·JPY)', term:'상시' },
+
+  { id:'kis', kind:'buy', name:'미니스탁 (해외 소수점)', benefit:'0.25% <span class="mute">(해외 유관기관비용 포함)</span>',
+    cond:'1인 1계좌 · 증거금 100% · 최소 원화 1,000원부터<br>매수 주문금액 15억 초과 시 주문 불가 · 통합증거금 계좌 신청 불가<br><b>과거의 "월 10건 무료"는 2022.12.31 종료된 이벤트로 현재 유효하지 않습니다</b>', term:'상시 · 혁신금융 지정기간' },
+
+  { id:'kakaopay', kind:'caution', name:'주식 모으기', benefit:'상시 무료 제도 <b>확인 안 됨</b>',
+    cond:'공식 수수료표에 주식모으기 항목이 없습니다. 2024.10 1주년 기념 무료 이벤트 기록만 존재', term:'–' },
+
+  { id:'hana', kind:'caution', name:'소수점·적립식 우대', benefit:'확인된 제도 <b>없음</b>',
+    cond:'공식 수수료표에 해당 항목 자체가 없습니다<br>반대로 부가서비스(레드존·THE HINT·핫픽스 등) 가입 시 요율이 <b>가산</b>됩니다', term:'–' }
+];
+
+var PERK_KIND = {
+  buy:      { label:'적립·소수점', cls:'chip-auto' },
+  acct:     { label:'계좌 유형',   cls:'chip-apply' },
+  fx:       { label:'환전',        cls:'chip-sep' },
+  caution:  { label:'주의',        cls:'chip-warn' }
+};
+
+// ============================================================
+// 확인 링크 — 수수료·이벤트가 바뀌면 여기부터 다시 확인하면 됩니다
+// (2026-08-18 기준 접속 확인. 증권사가 URL 구조를 바꾸면 끊길 수 있습니다)
+// ============================================================
+var LINKS = {
+  meritz: [
+    { t:'국내·해외 수수료·세금',       u:'https://home.imeritz.com/mobile/content/feeinfo/tax.html' },
+    { t:'해외주식 수수료',             u:'https://home.imeritz.com/fstock/ForeignStock01_03.do' },
+    { t:'Super365 혜택·환율우대',      u:'https://home.imeritz.com/spr/Super03.do' },
+    { t:'Super365 안내·유의사항 전문', u:'https://home.imeritz.com/mobile/content/super365/super365_guide.html' },
+    { t:'진행 중 이벤트',              u:'https://home.imeritz.com/cust/ntcevnt/PrgsEvnt.do' }
+  ],
+  mirae: [
+    { t:'국내·해외 수수료 (다이렉트)', u:'https://securities.miraeasset.com/imf/200/imf602.do' },
+    { t:'국내 수수료 (영업점 계좌)',   u:'https://securities.miraeasset.com/imf/200/imf601.do' },
+    { t:'진행 중 이벤트',              u:'https://securities.miraeasset.com/mw/mki/mki7000/r01.do' }
+  ],
+  kis: [
+    { t:'국내 수수료 (뱅키스·영업점)', u:'https://www.truefriend.com/main/customer/guide/_static/TF04ae010000.shtm' },
+    { t:'해외주식 수수료·환전 안내',   u:'https://securities.koreainvestment.com/main/bond/research/_static/TF03ca050000.jsp' },
+    { t:'이벤트 공지',                 u:'https://www.truefriend.com/main/customer/notice/Event.jsp?gubun=i&cmd=TF04gb010002' }
+  ],
+  namuh: [
+    { t:'나무 수수료 안내',            u:'https://www.mynamuh.com/tx/WMDoc.action?viewPage=/tx/customerService/chargeInfo.jsp' },
+    { t:'NH 국내 수수료',              u:'https://www.nhqv.com/WMDoc.action?viewPage=/guestGuide/business/feeBuySell.jsp' },
+    { t:'해외주식 수수료',             u:'https://www.nhqv.com/WMDoc.action?viewPage=/stockGuide/globalStock/ovsGuide/ovsFeeInfo.jsp' },
+    { t:'환전 우대율',                 u:'https://www.nhqv.com/guestGuide/business/feeBusiness02.action' },
+    { t:'나무 신규 이벤트',            u:'https://www.mynamuhbegin.com/stock' }
+  ],
+  samsung: [
+    { t:'수수료 안내 (국내)',          u:'https://www.samsungpop.com/ux/kor/customer/guide/workproductguide/commission.do' },
+    { t:'신규 이벤트·환율우대',        u:'https://www.onestopsamsungpop.co.kr/entry/' },
+    { t:'공지·이벤트 게시판',          u:'https://www.samsungpop.com/mbw/customer/noticeEvent.do?MenuSeqNo=3356' }
+  ],
+  kb: [
+    { t:'비대면계좌 수수료',           u:'https://www.kbsec.com/go.able?linkcd=s060307010002' },
+    { t:'일반계좌 수수료',             u:'https://www.kbsec.com/go.able?linkcd=m06030007' },
+    { t:'해외주식 수수료',             u:'https://www.kbsec.com/go.able?linkcd=s040426010003' },
+    { t:'환전 안내 (글로벌원마켓)',    u:'https://m.kbsec.com/go.able?linkcd=s100100010005' }
+  ],
+  shinhan: [
+    { t:'수수료 안내 (국내·해외)',     u:'https://m.shinhansec.com/mweb/svif/feif/sfeif0001' },
+    { t:'진행 중 이벤트',              u:'https://m.shinhansec.com/mweb/anev/evnt/aevnt0001' }
+  ],
+  kiwoom: [
+    { t:'국내주식 수수료',             u:'https://www.kiwoom.com/h/help/fee/VHelpStockFeeView' },
+    { t:'해외주식 수수료',             u:'https://www.kiwoom.com/h/help/fee/VHelpFoFeeView' },
+    { t:'미국주식 환전 안내',          u:'https://www.kiwoom.com/h/help/trade/VHelpUsaTradeUtilisationView' },
+    { t:'수수료 할인 이벤트',          u:'https://www.kiwoom.com/e/home/event/VEvent20260001View' }
+  ],
+  hana: [
+    { t:'수수료 안내 (국내·해외)',     u:'https://www.hanaw.com/main/customer/cm/CS_060200_T2.jsp' },
+    { t:'이벤트 게시판',               u:'https://www.hanaw.com/corebbs5/event/list/list.cmd' }
+  ],
+  toss: [
+    { t:'수수료 안내',                 u:'https://corp.tossinvest.com/ko/business?tab=commission' },
+    { t:'이벤트·공지',                 u:'https://contents.tossinvest.com/events/stock-transfer' }
+  ],
+  kakaopay: [
+    { t:'수수료 안내',                 u:'https://www.kakaopaysec.com/guide/feeGuide/dynamicPage.do' },
+    { t:'공지사항',                    u:'https://www.kakaopaysec.com/customer/notice/dynamicPage.do' }
+  ],
+  daishin: [
+    { t:'수수료 안내 (사이보스)',      u:'https://www.daishin.com/g.ds?m=1093&p=1993&v=2484' },
+    { t:'크레온 (비대면 브랜드)',      u:'https://www.creontrade.com/' },
+    { t:'진행 중 이벤트',              u:'https://www.daishin.com/g.ds?m=1109&p=12931&v=12831' }
+  ],
+  eugene: [
+    { t:'비대면계좌 수수료',           u:'https://www.eugenefn.com/serv/svwc/getSvwc400p.do?svwcHeader=400&svwcLeft=412' },
+    { t:'영업점계좌 수수료',           u:'https://www.eugenefn.com/serv/svwc/getSvwc400p.do?svwcHeader=400&svwcLeft=411' },
+    { t:'신규 우대수수료 이벤트',      u:'https://m.eugenefn.com/ev11r.do?boardId=24&pageNo=1' }
+  ]
+};
+
+// ============================================================
+// 유틸
+// ============================================================
+function won(n){ return Math.round(n).toLocaleString('ko-KR'); }
+function korAmount(n){
+  if(n >= 100000000) return (n/100000000).toFixed(n % 100000000 === 0 ? 0 : 1) + '억원';
+  if(n >= 10000) return Math.round(n/10000).toLocaleString('ko-KR') + '만원';
+  return n.toLocaleString('ko-KR') + '원';
+}
+function rateTxt(v){ return v.toFixed(7).replace(/0+$/,'').replace(/\.$/,'') + '%'; }
+function tierAt(tiers, amount){ return tiers.find(function(t){ return amount <= t.max; }) || tiers[tiers.length-1]; }
+
+function effRate(b, ch, amount){
+  var tiers = (ch === 'hts' && b.tiersHts) ? b.tiersHts : b.tiers;
+  var rate, add = 0;
+  if(tiers){ var t = tierAt(tiers, amount); rate = t.rate; add = t.add || 0; }
+  else { rate = (ch === 'hts') ? b.hts : b.mts; }
+  var fee = amount * rate / 100 + add;
+  if(b.minFee) fee = Math.max(fee, b.minFee);
+  var miscFee = (b.miscIncluded === false) ? amount * b.misc / 100 : 0;
+  var total = fee + miscFee;
+  return { rate:rate, add:add, fee:fee, miscFee:miscFee, total:total,
+           eff: amount > 0 ? total/amount*100 : 0, tiered: !!tiers };
+}
+function fxSpread(o){
+  if(o.spreadRate !== undefined && o.spreadRate !== null) return o.spreadRate;
+  if(o.prefRate !== null && o.prefRate !== undefined) return 1.0 * o.prefRate;
+  return null;
+}
+var CHIP = {
+  auto:  '<span class="chip chip-auto">자동</span>',
+  apply: '<span class="chip chip-apply">신청</span>',
+  check: '<span class="chip chip-check">확인</span>',
+  none:  '<span class="chip chip-none">없음</span>'
+};
+
+// ============================================================
+// TABLE 01 · 종합 비교표 (정렬 가능)
+// ============================================================
+var EVENT_ORDER = { auto:0, apply:1, check:2, none:3 };
+var masterRows = null;
+var masterSort = { key:'size', dir:1 };   // 기본: 자기자본 큰 순(= 규모 순위 1위부터)
+
+function buildMasterRows(){
+  var REF = 10000000;
+  return DOMESTIC.map(function(b){
+    var mts = effRate(b, 'mts', REF), hts = effRate(b, 'hts', REF);
+    var ov = OVERSEAS[b.id], ev = EVENTS[b.id];
+    var sp = fxSpread(ov);
+    return {
+      b:b, mts:mts, hts:hts,
+      sk: {
+        name:    b.name,
+        size:    SIZE[b.id].rank,       // 1위가 가장 큼 → 오름차순이 규모 순
+        domRate: (mts.tiered || hts.tiered) ? mts.eff : Math.min(b.mts, b.hts),
+        domEff:  mts.eff,
+        ovsRate: ov.rate,
+        fx:      sp,                    // 미확인(null)은 방향과 무관하게 항상 마지막
+        event:   EVENT_ORDER[ev.type]
+      }
+    };
+  });
+}
+
+function sortMasterRows(){
+  var k = masterSort.key, d = masterSort.dir;
+  masterRows.sort(function(x, y){
+    var a = x.sk[k], b = y.sk[k];
+    var an = (a === null || a === undefined), bn = (b === null || b === undefined);
+    if(an && bn) return x.sk.domEff - y.sk.domEff;
+    if(an) return 1;
+    if(bn) return -1;
+    if(typeof a === 'string') return d * a.localeCompare(b, 'ko');
+    if(a === b) return x.sk.domEff - y.sk.domEff;   // 동률이면 국내 실부담 순
+    return d * (a - b);
+  });
+}
+
+function updateSortHeaders(){
+  var ths = document.querySelectorAll('#t-master th.sortable');
+  for(var i = 0; i < ths.length; i++){
+    var th = ths[i];
+    var on = th.getAttribute('data-key') === masterSort.key;
+    th.classList.toggle('on', on);
+    var arrow = th.querySelector('.arrow');
+    if(arrow) arrow.textContent = on ? (masterSort.dir === 1 ? '▲' : '▼') : '▲▼';
+  }
+}
+
+function renderMaster(){
+  if(!masterRows) masterRows = buildMasterRows();
+  sortMasterRows();
+  updateSortHeaders();
+
+  document.getElementById('tb-master').innerHTML = masterRows.map(function(r, i){
+    var b = r.b, ov = OVERSEAS[b.id], ev = EVENTS[b.id];
+
+    // 국내 표기 요율
+    var domRate;
+    if(r.mts.tiered || r.hts.tiered){
+      domRate = '<span class="chip chip-tier">구간별</span>' +
+        '<div class="bsub">' + (b.tiers
+          ? rateTxt(b.tiers[b.tiers.length-1].rate) + ' ~ ' + rateTxt(b.tiers[0].rate)
+          : 'MTS ' + rateTxt(b.mts) + ' 단일') + '</div>';
+    } else if(b.mts !== b.hts){
+      domRate = '<div class="split"><span class="k">MTS</span> ' + rateTxt(b.mts) +
+                '<br><span class="k">HTS</span> ' + rateTxt(b.hts) + '</div>';
+    } else {
+      domRate = '<span class="big a">' + rateTxt(b.mts) + '</span>' +
+                (b.mobileOnly ? '<div class="bsub">모바일 전용</div>' : '<div class="bsub">MTS·HTS 동일</div>');
+    }
+    // 적립·소수점 등 조건부 무료 제도가 있으면 수수료 밑에 한 줄
+    var buyPerks = PERKS.filter(function(p){ return p.id === b.id && p.kind === 'buy'; });
+    if(buyPerks.length){
+      domRate += '<div class="perk-tip"><a href="#t-perk">' +
+        buyPerks.map(function(p){ return '↓ ' + p.name; }).join('<br>') + '</a></div>';
+    }
+
+    // 국내 실부담
+    var miscChip = (b.miscIncluded === false)
+      ? '<span class="chip chip-sep">별도</span>'
+      : (b.miscIncluded === null ? '<span class="chip chip-warn">확인필요</span>' : '<span class="chip chip-inc">포함</span>');
+    var domEff;
+    if(r.mts.tiered || r.hts.tiered){
+      domEff = '<span class="big b">' + r.mts.eff.toFixed(4) + '%</span>' +
+               '<div class="bsub">1,000만원 거래 기준</div>';
+    } else if(r.mts.eff !== r.hts.eff){
+      domEff = '<div class="split"><span class="k">MTS</span> ' + rateTxt(r.mts.eff) +
+               '<br><span class="k">HTS</span> ' + rateTxt(r.hts.eff) + '</div>';
+    } else {
+      domEff = '<span class="big a">' + rateTxt(r.mts.eff) + '</span>';
+    }
+    domEff += '<div class="bsub">' + miscChip + '</div>';
+
+    // 미국주식
+    var ovRate = '<span class="big b">' + ov.rate.toFixed(2) + '%</span>';
+    if(ov.rateTiers){
+      ovRate += '<div class="cond-list">' + ov.rateTiers.map(function(t){
+        return '<div class="cond-row"><span class="cond-k">' + t.label + '</span>' +
+               '<span class="cond-v">' + t.disp + '</span></div>';
+      }).join('') + '</div>';
+    } else {
+      ovRate += '<div class="bsub">최소 ' + (ov.minUSD === null ? '미확인'
+        : (ov.minUSD === 0 ? '없음' : '$' + ov.minUSD)) + '</div>';
+    }
+    var sp = fxSpread(ov);
+    var ovFx;
+    if(sp === null){
+      ovFx = '<span class="mute">미확인</span><div class="bsub"><span class="chip chip-warn">확인필요</span></div>';
+    } else if(ov.fxTiers){
+      ovFx = '<span class="big g">' + ov.fxTiers[0].spread.toFixed(2) + '%</span>' +
+        '<div class="cond-list">' + ov.fxTiers.map(function(t){
+          return '<div class="cond-row"><span class="cond-k">' + t.label + '</span>' +
+                 '<span class="cond-v">' + t.spread.toFixed(2) + '%</span></div>';
+        }).join('') + '</div>';
+    } else {
+      ovFx = '<span class="big g">' + sp.toFixed(2) + '%</span><div class="bsub">' + ov.prefLabel + '</div>';
+    }
+
+    // 이벤트
+    var evCell = CHIP[ev.type] + '<div class="evt-line">' + ev.short + '</div>' +
+                 (ev.cap ? '<div class="evt-cap">' + ev.cap + '</div>' : '') +
+                 '<div class="evt-period">' + ev.period + '</div>';
+
+    // 회사 규모
+    var sz = SIZE[b.id];
+    var szCell = '<span class="big">' + sz.eq.toFixed(2) + '조</span>' +
+      '<div class="bsub">규모 ' + sz.rank + '위 · 총자산 ' +
+      (sz.ta === null ? '미확인' : sz.ta.toFixed(0) + '조') + '</div>';
+
+    return '<tr class="' + (ev.hi ? 'hi' : '') + '" data-broker="' + b.name + '">' +
+      '<td class="rank">' + (i+1) + '</td>' +
+      '<td class="l nw"><div class="bname">' + b.name + '</div><div class="bsub">' + b.acct + '</div></td>' +
+      '<td class="nw">' + szCell + '</td>' +
+      '<td class="c-dom nw">' + domRate + '</td>' +
+      '<td class="c-dom nw">' + domEff + '</td>' +
+      '<td class="nw">' + ovRate + '</td>' +
+      '<td class="nw">' + ovFx + '</td>' +
+      '<td class="c-evt" style="min-width:210px;">' + evCell + '</td>' +
+      '</tr>';
+  }).join('');
+
+  // 비고
+  var notes = [];
+  DOMESTIC.forEach(function(b){
+    var ov = OVERSEAS[b.id];
+    var parts = [];
+    if(b.warn) parts.push('<span class="chip chip-warn">확인필요</span> ' + b.warn + '.');
+    if(b.note) parts.push(b.note);
+    if(ov.warn) parts.push('<span class="chip chip-warn">확인필요</span> ' + ov.warn + '.');
+    if(ov.note) parts.push(ov.note);
+    notes.push('<div class="note-item" data-broker="' + b.name + '">' +
+      '<span class="nm">' + b.name + '</span><span>' + parts.join(' ') + '</span></div>');
+  });
+  document.getElementById('notes-master').innerHTML = notes.join('');
+}
+
+// ============================================================
+// TABLE 02 · 구간별 상세
+// ============================================================
+function renderTier(){
+  var out = [];
+  DOMESTIC.forEach(function(b){
+    var sets = [];
+    if(b.tiers) sets.push({ label: b.name + ' · MTS/HTS 공통', tiers: b.tiers });
+    if(b.tiersHts) sets.push({ label: b.name + ' · PC HTS', tiers: b.tiersHts });
+    sets.forEach(function(s){
+      s.tiers.forEach(function(t, i){
+        var fee = 10000000 * t.rate / 100 + (t.add || 0);
+        var inRange = 10000000 <= t.max && (i === 0 || 10000000 > s.tiers[i-1].max);
+        out.push('<tr class="' + (inRange ? 'hi' : '') + '" data-broker="' + b.name + '">' +
+          '<td class="l nw">' + (i === 0 ? '<div class="bname">' + s.label + '</div>' : '<span class="mute">〃</span>') + '</td>' +
+          '<td class="l nw">' + t.label + '</td>' +
+          '<td class="r nw">' + rateTxt(t.rate) + '</td>' +
+          '<td class="r nw">' + (t.add ? won(t.add) + '원' : '<span class="mute">–</span>') + '</td>' +
+          '<td class="r nw">' + (inRange ? '<span class="big a">' + won(fee) + '원</span>' : '<span class="mute">–</span>') + '</td>' +
+          '</tr>');
+      });
+    });
+  });
+  document.getElementById('tb-tier').innerHTML = out.join('');
+}
+
+// ============================================================
+// TABLE 03 · 조건부 무료·할인
+// ============================================================
+function renderPerks(){
+  var nameOf = {}, orderOf = {};
+  DOMESTIC.forEach(function(b){ nameOf[b.id] = b.name; orderOf[b.id] = SIZE[b.id].rank; });
+  var sorted = PERKS.slice().sort(function(a, b){ return orderOf[a.id] - orderOf[b.id]; });
+  var prev = null;
+  document.getElementById('tb-perk').innerHTML = sorted.map(function(p){
+    var k = PERK_KIND[p.kind];
+    var first = p.id !== prev; prev = p.id;
+    return '<tr data-broker="' + nameOf[p.id] + '">' +
+      '<td class="l nw" style="vertical-align:top;">' +
+        (first ? '<div class="bname">' + nameOf[p.id] + '</div>' : '<span class="mute">〃</span>') + '</td>' +
+      '<td style="vertical-align:top;"><span class="chip ' + k.cls + '">' + k.label + '</span></td>' +
+      '<td class="l" style="vertical-align:top; min-width:150px; font-weight:800;">' + p.name + '</td>' +
+      '<td class="l" style="vertical-align:top; min-width:170px;">' + p.benefit + '</td>' +
+      '<td class="l" style="vertical-align:top; min-width:320px; font-size:12px; color:var(--ink-soft); line-height:1.65;">' + p.cond + '</td>' +
+      '<td class="nw" style="vertical-align:top; font-size:11.5px; color:var(--ink-mute); font-weight:700;">' + p.term + '</td>' +
+      '</tr>';
+  }).join('');
+}
+
+// ============================================================
+// TABLE 04 · 이벤트 상세
+// ============================================================
+function renderEvents(){
+  var order = ['meritz','namuh','eugene','shinhan','mirae','daishin','samsung','kis','kiwoom','kb','hana','toss','kakaopay'];
+  var nameOf = {};
+  DOMESTIC.forEach(function(b){ nameOf[b.id] = b.name; });
+  document.getElementById('tb-event').innerHTML = order.map(function(id){
+    var e = EVENTS[id];
+    return '<tr class="' + (e.hi ? 'hi' : '') + '" data-broker="' + nameOf[id] + '">' +
+      '<td class="l nw"><div class="bname">' + nameOf[id] + '</div></td>' +
+      '<td>' + CHIP[e.type] + '</td>' +
+      '<td class="l" style="min-width:200px; line-height:1.55;">' + e.benefit + '</td>' +
+      '<td class="nw">' + e.dur + '</td>' +
+      '<td class="l" style="min-width:300px; font-size:12px; color:var(--ink-soft); line-height:1.6;">' + e.cond + '</td>' +
+      '<td class="nw" style="font-size:11.5px; color:var(--ink-mute);">' + e.period.replace(' ~ ', '<br>~ ') + '</td>' +
+      '</tr>';
+  }).join('');
+}
+
+// ============================================================
+// TABLE 06 · 확인 링크
+// ============================================================
+function renderLinks(){
+  document.getElementById('tb-link').innerHTML = DOMESTIC.map(function(b){
+    var ls = LINKS[b.id] || [];
+    var chips = ls.map(function(l){
+      return '<a class="lnk" href="' + l.u + '" target="_blank" rel="noopener">' +
+        '<span class="lnk-t">' + l.t + '</span>' +
+        '<span class="lnk-u">' + l.u.replace(/^https?:\/\//,'') + '</span></a>';
+    }).join('');
+    return '<tr data-broker="' + b.name + '">' +
+      '<td class="l nw" style="vertical-align:top;"><div class="bname">' + b.name + '</div>' +
+        '<div class="bsub">' + b.acct + '</div></td>' +
+      '<td class="l"><div class="lnk-wrap">' + chips + '</div></td>' +
+      '</tr>';
+  }).join('');
+}
+
+// ============================================================
+// TABLE 05 · 계산기
+// ============================================================
+var calcState = { market:'domestic', channel:'mts' };
+
+function renderCalc(){
+  var amount = Math.max(0, Number(document.getElementById('amount').value) || 0);
+  document.getElementById('amount-hint').textContent = korAmount(amount);
+  var isDom = calcState.market === 'domestic';
+  var seg = document.getElementById('channel-seg');
+  seg.style.opacity = isDom ? '1' : '0.35';
+  seg.style.pointerEvents = isDom ? 'auto' : 'none';
+  document.getElementById('ch-hint').textContent = isDom ? 'KB·신한은 매체별 차이가 큽니다' : '미국주식은 매체 구분 없음';
+
+  var head = document.getElementById('th-calc');
+  var body = document.getElementById('tb-calc');
+
+  if(isDom){
+    var rows = DOMESTIC.map(function(b){ return { b:b, r: effRate(b, calcState.channel, amount) }; })
+      .sort(function(x,y){ return x.r.total - y.r.total; });
+    head.innerHTML = '<tr><th>순위</th><th class="l">증권사</th><th class="r">적용 요율</th>' +
+      '<th class="r">위탁수수료</th><th class="r">유관기관제비용</th><th class="r">실부담 합계</th><th class="r">실효율</th></tr>';
+    body.innerHTML = rows.map(function(x, i){
+      var b = x.b, r = x.r;
+      var rTxt = rateTxt(r.rate) + (r.add ? ' + ' + won(r.add) + '원' : '');
+      var miscTxt = (b.miscIncluded === false)
+        ? won(r.miscFee) + '원'
+        : '<span class="mute">포함</span>' + (b.miscIncluded === null ? ' <span class="chip chip-warn">확인필요</span>' : '');
+      return '<tr class="' + (i === 0 ? 'hi' : '') + '" data-broker="' + b.name + '">' +
+        '<td class="rank">' + (i+1) + '</td>' +
+        '<td class="l nw"><div class="bname">' + b.name + '</div><div class="bsub">' + b.acct +
+          (b.mobileOnly && calcState.channel === 'hts' ? ' · 모바일 전용' : '') + '</div></td>' +
+        '<td class="r nw">' + rTxt + '</td>' +
+        '<td class="r nw">' + won(r.fee) + '원</td>' +
+        '<td class="r nw">' + miscTxt + '</td>' +
+        '<td class="r nw"><span class="big a">' + won(r.total) + '원</span></td>' +
+        '<td class="r nw">' + r.eff.toFixed(4) + '%</td>' +
+        '</tr>';
+    }).join('');
+  } else {
+    var nameOf = {};
+    DOMESTIC.forEach(function(b){ nameOf[b.id] = b.name; });
+    var orows = Object.keys(OVERSEAS).map(function(id){
+      var o = OVERSEAS[id], sp = fxSpread(o);
+      var comm = amount * o.rate / 100;
+      var fx = (sp !== null) ? amount * sp / 100 : 0;
+      return { id:id, name:nameOf[id], o:o, sp:sp, comm:comm, fx:fx, total:comm+fx, unknown: sp === null };
+    }).sort(function(x,y){ return (x.unknown?1:0) - (y.unknown?1:0) || x.total - y.total; });
+
+    head.innerHTML = '<tr><th>순위</th><th class="l">증권사</th><th class="r">매매수수료율</th>' +
+      '<th class="r">매매수수료</th><th class="r">환전 스프레드</th><th class="r">환전 수수료</th><th class="r">합계</th></tr>';
+    var rk = 0;
+    body.innerHTML = orows.map(function(x){
+      var rank = x.unknown ? '<span class="mute">–</span>' : (++rk);
+      return '<tr class="' + (rk === 1 && !x.unknown ? 'hi' : '') + '" data-broker="' + x.name + '">' +
+        '<td class="rank">' + rank + '</td>' +
+        '<td class="l nw"><div class="bname">' + x.name + '</div></td>' +
+        '<td class="r nw">' + x.o.rate.toFixed(2) + '%</td>' +
+        '<td class="r nw">' + won(x.comm) + '원</td>' +
+        '<td class="r nw">' + (x.unknown ? '<span class="mute">미확인</span>' : x.sp.toFixed(2) + '%') + '</td>' +
+        '<td class="r nw">' + (x.unknown ? '<span class="mute">–</span>' : won(x.fx) + '원') + '</td>' +
+        '<td class="r nw"><span class="big a">' + won(x.total) + '원</span>' +
+          (x.unknown ? ' <span class="chip chip-warn">환전 제외</span>' : '') + '</td>' +
+        '</tr>';
+    }).join('');
+  }
+}
+
+// ============================================================
+// 검색 / 입력
+// ============================================================
+// 종합표 헤더 클릭 → 오름차순 ↔ 내림차순
+document.querySelectorAll('#t-master th.sortable').forEach(function(th){
+  th.addEventListener('click', function(){
+    var key = th.getAttribute('data-key');
+    if(masterSort.key === key) masterSort.dir = -masterSort.dir;
+    else { masterSort.key = key; masterSort.dir = 1; }
+    renderMaster();
+    applyFilter();
+  });
+});
+
+function applyFilter(){
+  var q = document.getElementById('search').value.trim();
+  var els = document.querySelectorAll('[data-broker]');
+  for(var i = 0; i < els.length; i++){
+    var hit = q === '' || els[i].getAttribute('data-broker').indexOf(q) !== -1;
+    els[i].classList.toggle('hidden-row', !hit);
+  }
+}
+
+document.getElementById('search').addEventListener('input', applyFilter);
+document.querySelectorAll('#market-seg button').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    document.querySelectorAll('#market-seg button').forEach(function(b){ b.classList.remove('active'); });
+    btn.classList.add('active');
+    calcState.market = btn.getAttribute('data-m');
+    renderCalc();
+  });
+});
+document.querySelectorAll('#channel-seg button').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    document.querySelectorAll('#channel-seg button').forEach(function(b){ b.classList.remove('active'); });
+    btn.classList.add('active');
+    calcState.channel = btn.getAttribute('data-ch');
+    renderCalc();
+  });
+});
+document.getElementById('amount').addEventListener('input', function(){ renderCalc(); applyFilter(); });
+
+renderMaster();
+renderTier();
+renderPerks();
+renderEvents();
+renderLinks();
+renderCalc();
+</script>
+</body>
+</html>
