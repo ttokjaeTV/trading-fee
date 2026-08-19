@@ -145,6 +145,36 @@
   table.t tbody tr:last-child td { border-bottom: none; }
   table.t tbody tr.hi { background: var(--accent-soft); }
 
+  /* 대상 조건 강조 (생애최초·휴면 등) */
+  .tgt { color: #C0392B; font-weight: 800; }
+  .tgt-ok { color: #2D7A4F; font-weight: 800; }
+
+  /* 증권사 칸 안의 규모 표기 */
+  .bsize {
+    font-size: 10.5px; font-weight: 700; color: var(--ink-mute);
+    margin-top: 5px; padding-top: 5px;
+    border-top: 1px dashed var(--border);
+    letter-spacing: -0.1px; line-height: 1.5;
+  }
+  .bsize-rank { color: var(--brown); font-weight: 800; font-size: 11px; }
+  .bsize-rank b { color: var(--brown); font-weight: 900; }
+  .bsize-amt { margin-top: 2px; }
+  tr.hi .bsize { border-top-color: rgba(217,84,43,0.3); }
+
+  /* 증권사 헤더 안의 정렬 버튼 */
+  .sort-mini { display: flex; gap: 4px; margin-top: 6px; }
+  .sort-mini button {
+    font-family: inherit; font-size: 10px; font-weight: 800;
+    padding: 3px 7px; border-radius: 6px; cursor: pointer;
+    background: var(--white); border: 1px solid var(--border);
+    color: var(--ink-mute); transition: all 0.12s ease;
+    display: inline-flex; align-items: center; gap: 3px; white-space: nowrap;
+  }
+  .sort-mini button:hover { border-color: var(--accent); color: var(--accent); }
+  .sort-mini button.on { background: var(--dark-warm); border-color: var(--dark-warm); color: var(--white); }
+  .sort-mini .arrow { font-size: 8px; opacity: 0.5; letter-spacing: -1px; }
+  .sort-mini button.on .arrow { opacity: 1; }
+
   /* 정렬 가능한 헤더 */
   th.sortable { cursor: pointer; user-select: none; transition: all 0.12s ease; position: relative; }
   th.sortable:hover { background: var(--accent-soft) !important; color: #9C3A17 !important; }
@@ -240,6 +270,38 @@
     word-break: break-all; line-height: 1.45;
   }
 
+  /* 비고 카드 (종합표 하단) */
+  #notes-master { margin-top: 4px; }
+  .note-card {
+    display: grid; grid-template-columns: 130px 1fr; gap: 18px;
+    padding: 18px 0; border-bottom: 1px solid var(--border);
+  }
+  .note-card:last-child { border-bottom: none; padding-bottom: 4px; }
+  .note-card:first-child { padding-top: 6px; }
+  .note-name {
+    font-size: 14px; font-weight: 900; color: var(--accent);
+    letter-spacing: -0.3px; line-height: 1.5;
+  }
+  .note-body { min-width: 0; }
+  .note-row {
+    display: grid; grid-template-columns: 96px 1fr; gap: 14px;
+    align-items: start; padding: 7px 0;
+  }
+  .note-row + .note-row { border-top: 1px dashed var(--border); }
+  .note-k {
+    font-size: 11px; font-weight: 800; color: var(--ink-mute);
+    background: var(--bg-alt); border-radius: 6px;
+    padding: 3px 8px; text-align: center; white-space: nowrap;
+    letter-spacing: -0.2px;
+  }
+  .note-row.warn .note-k { background: #E8DFC9; color: var(--brown); }
+  .note-v {
+    font-size: 13.5px; font-weight: 600; color: var(--ink-soft);
+    line-height: 1.85; letter-spacing: -0.1px; min-width: 0;
+  }
+  .note-v b { color: var(--ink); font-weight: 800; }
+  .note-row.warn .note-v { color: var(--brown); }
+
   .notes { margin-top: 16px; padding-top: 14px; border-top: 1px dashed var(--border); }
   .note-item { display: flex; gap: 10px; font-size: 12.5px; color: var(--ink-soft); font-weight: 600; line-height: 1.65; margin-bottom: 7px; }
   .note-item .nm { color: var(--accent); font-weight: 800; flex-shrink: 0; min-width: 116px; }
@@ -311,10 +373,17 @@
     table.t th { padding: 8px 6px; font-size: 10px; }
     table.t td { padding: 10px 6px; }
     .bname { font-size: 12.5px; }
+    .bsize { font-size: 9.5px; margin-top: 4px; padding-top: 4px; }
+    .sort-mini button { font-size: 9px; padding: 2px 5px; }
     .bsub { font-size: 10px; }
     .big { font-size: 13px; }
     .split { font-size: 11.5px; }
     .calc-grid { grid-template-columns: 1fr !important; gap: 14px !important; }
+    .note-card { grid-template-columns: 1fr !important; gap: 8px; padding: 14px 0; }
+    .note-name { font-size: 13.5px; }
+    .note-row { grid-template-columns: 1fr !important; gap: 5px; padding: 8px 0; }
+    .note-k { justify-self: start; }
+    .note-v { font-size: 13px; line-height: 1.8; }
     .note-item { flex-direction: column; gap: 1px; }
     .note-item .nm { min-width: 0; }
     .insight-box { padding: 22px 17px; border-radius: 16px; }
@@ -426,8 +495,12 @@
         <thead>
           <tr>
             <th rowspan="2">순위</th>
-            <th rowspan="2" class="l sortable" data-key="name">증권사<span class="arrow">▲▼</span></th>
-            <th rowspan="2" class="sortable on" data-key="size">회사 규모<div style="font-weight:600;opacity:0.75;">자기자본</div><span class="arrow">▲</span></th>
+            <th rowspan="2" class="l">증권사
+              <div class="sort-mini">
+                <button type="button" data-key="size" class="on">규모순<span class="arrow">▲</span></button>
+                <button type="button" data-key="name">가나다<span class="arrow">▲▼</span></button>
+              </div>
+            </th>
             <th colspan="2" class="g-dom">국내주식 수수료</th>
             <th colspan="2" class="g-ovs">미국주식 수수료</th>
             <th rowspan="2" class="g-evt sortable" data-key="event">수수료 이벤트<span class="arrow">▲▼</span></th>
@@ -447,6 +520,8 @@
       <span class="li"><span class="chip chip-inc">포함</span> 표기 요율에 이미 포함</span>
       <span class="li"><span class="chip chip-warn">확인필요</span> 공식 페이지에 표기 없음</span>
       <span class="li"><span class="chip chip-tier">구간별</span> 거래금액에 따라 요율이 달라짐</span>
+      <span class="li"><span class="tgt">빨간 글씨</span> 대상 조건 · 신청 필요</span>
+      <span class="li"><span class="tgt-ok">초록 글씨</span> 신청 없이 자동 적용</span>
       <span class="li"><span class="chip chip-auto">자동</span> 신청 없이 적용</span>
       <span class="li"><span class="chip chip-apply">신청</span> 직접 신청해야 적용</span>
     </div>
@@ -703,11 +778,11 @@ var SIZE = {
 var DOMESTIC = [
   { id:'namuh', name:'NH투자증권', acct:'나무 앱 개설', mts:0.01, hts:0.01,
     misc:MISC_KRX, miscIncluded:true,
-    note:'유관기관제비용 포함. 공식 안내에 "고객 최종수수료는 당사 표준수수료율로 정산"되며 NXT 체결 시 KRX 거래수수료 차액분을 자동 차감한다고 명시돼 있습니다. 나무 자체 채널(나무 앱·HTS·나무MAX)에서만 적용됩니다. NH투자증권 채널로 거래하면 NH 표준 요율입니다.' },
+    note:'유관기관제비용 포함(공식 안내에 "고객 최종수수료는 당사 표준수수료율로 정산", NXT 체결 시 차액 자동 차감 명시).<br><b>나무 자체 채널(나무 앱·HTS·나무MAX)에서만 적용</b>됩니다. NH투자증권 채널로 거래하면 NH 표준 요율.' },
 
   { id:'meritz', name:'메리츠증권', acct:'Super365(비대면)', mts:0.009, hts:0.009,
     misc:MISC_KRX, miscIncluded:true,
-    note:'Super365는 온라인 전용 계좌로 디지털금융센터가 관리점이며 투자상담은 제공되지 않습니다. 일반 온라인 계좌는 구간별 0.078132~0.198132%로 크게 다릅니다. 현재는 이벤트로 유관기관제비용까지 0원입니다(아래 이벤트 표 참고).' },
+    note:'Super365는 온라인 전용 계좌로 디지털금융센터가 관리점이고 투자상담은 제공되지 않습니다. 타 영업점 이관 불가.<br>일반 온라인 계좌는 구간별 0.078132~0.198132%. 현재는 이벤트로 유관기관제비용까지 0원.' },
 
   { id:'mirae', name:'미래에셋증권', acct:'다이렉트(비대면)', mts:0.010, hts:0.010,
     misc:MISC_KRX, miscIncluded:false,
@@ -731,11 +806,11 @@ var DOMESTIC = [
 
   { id:'toss', name:'토스증권', acct:'모바일 전용', mts:0.015, hts:0.015,
     misc:MISC_KRX, miscIncluded:false, mobileOnly:true,
-    note:'유관기관제비용 별도 부과. 공식 고지문에 "거래로 인해 발생된 세금 및 제비용은 고객 부담"으로 명시돼 있고, 주식모으기 매수 건에 한해서만 유관기관수수료를 회사가 부담합니다. 2025.12~2026.6.30 국내주식 수수료 무료 이벤트는 종료됐습니다. NXT 체결은 0.014%.' },
+    note:'<b>유관기관제비용 별도 부과</b>("거래로 인해 발생된 세금 및 제비용은 고객 부담" 명시). 주식모으기 매수 건만 회사가 부담합니다.<br>2025.12~2026.6.30 수수료 무료 이벤트는 종료. NXT 체결 0.014%.' },
 
   { id:'daishin', name:'대신증권', acct:'크레온 알뜰한', mts:0.015, hts:0.015,
     misc:MISC_KRX, miscIncluded:true,
-    note:'유관기관제비용 포함. 공식 이벤트 문구가 "국내주식 수수료 0%(유관비용 포함)" → "이후 평생우대 혜택(유관비용 부과) 0.0036396%"로 구조를 명시합니다. 일반 사이보스 계좌는 MTS 0.1972959%, HTS 구간별 0.0772959~0.4972959%로 크게 다릅니다.' },
+    note:'유관기관제비용 포함(공식 이벤트 문구가 "0%(유관비용 포함)" → "평생우대(유관비용 부과) 0.0036396%"로 구조를 명시).<br>일반 사이보스 계좌는 MTS 0.1972959%, HTS 구간별 0.0772959~0.4972959%로 크게 다릅니다.' },
 
   { id:'kiwoom', name:'키움증권', acct:'영웅문(비대면)', mts:0.015, hts:0.015,
     misc:MISC_KRX, miscIncluded:false,
@@ -743,7 +818,7 @@ var DOMESTIC = [
 
   { id:'kb', name:'KB증권', acct:'비대면계좌', mts:0.12, hts:0.015,
     misc:0.0044792, miscIncluded:true,
-    note:'유관기관제비용 포함(공식 표기 "KRX·NXT 포함"). KB가 공시하는 유관기관수수료는 0.0044792%로 KRX 원가 0.0036396%보다 높은데 차액의 구성은 공시돼 있지 않습니다. MTS(M-able) 0.12% / HTS 0.015%로 8배 차이납니다. 매체 선택에 특히 주의하세요.' },
+    note:'<b>MTS(M-able) 0.12% / HTS 0.015%로 8배 차이</b>납니다. 매체 선택에 특히 주의.<br>유관기관제비용 포함(공식 표기 "KRX·NXT 포함"). KB 공시 유관기관수수료는 0.0044792%로 KRX 원가보다 높은데 차액 구성은 미공시.' },
 
   { id:'samsung', name:'삼성증권', acct:'온라인(구간별)',
     tiers:[
@@ -785,13 +860,13 @@ var OVERSEAS = {
                 { label:'CNY·HKD·JPY',       spread:0.20, pref:'80% 우대' }
               ],
               warn:'일반(비Super365) 계좌의 기본 환율우대율 미확인',
-              note:'Super365 기준. <b>2026.01.04 이전에 개설한 계좌는 미국주식(소수점 포함)까지 무료</b>이고, 2026.01.05 이후 개설분부터 0.07%(소수점 0.25%)가 붙습니다. 이전 개설 고객이라도 2026.01.05 이후 추가 개설한 계좌로 거래하면 0.07% 적용. USD 환전 무료는 2026.12.31까지이고 이후 95% 우대로 전환 예정. CNY·HKD·JPY는 80% 우대. 매도 시 SEC Fee 0.00206% 별도.' },
+              note:'Super365 기준. USD 환전 무료는 <b>2026.12.31까지</b>이고 이후 95% 우대로 전환 예정입니다. CNY·HKD·JPY는 80% 우대. 매도 시 SEC Fee 0.00206% 별도.<br>개설일에 따라 미국주식 무료 여부가 갈립니다 → 조건부 제도표 참고.' },
   toss:     { rate:0.1,  minUSD:0,    spreadRate:0.05, prefLabel:'95% 할인',
               fxTiers:[
                 { label:'정규시간 09:00~15:30', spread:0.05, pref:'95% 할인' },
                 { label:'시간외·주말·공휴일',   spread:0.50, pref:'50% 할인' }
               ],
-              note:'환전 시간대 기준은 국내 영업일이며 2026.4.22부터 적용. 체결금액 $10 이하는 매매수수료 없음. 주식모으기로 매수하면 매수 수수료가 무료지만 매도할 때는 수수료가 붙습니다.' },
+              note:'환전 시간대 기준은 국내 영업일이며 2026.4.22부터 적용. 체결금액 $10 이하는 매매수수료 없음.<br><b>주식모으기로 매수하면 매수 수수료가 무료</b>지만 매도할 때는 수수료가 붙습니다.' },
   eugene:   { rate:0.25, minUSD:0, prefRate:0.10, prefLabel:'90% 우대',
               note:'미국은 최소수수료 조항 자체가 없습니다(일본·홍콩은 "최소수수료 없음"으로 명시). 디지털 계좌 이용 고객 대상 전통화(USD·HKD·CNY·JPY) 기본우대 90%.' },
   kakaopay: { rate:0.1,  minUSD:0.01, spreadRate:0.05, prefLabel:'95% 우대(이벤트)',
@@ -800,41 +875,41 @@ var OVERSEAS = {
                 { label:'그 외 시간·주말',    spread:1.00, pref:'우대 없음' }
               ],
               warn:'신청 필요 여부 미공시 · 사전고지 없이 변경 가능',
-              note:'95% 우대는 2026.03.06 공지로 유효가 재확인됐으나 <b>종료일이 정해져 있지 않고 "사전고지 없이 변경될 수 있음"</b>이 명시돼 있습니다. 신청이 필요한지는 어느 공식 문서에도 없습니다. 기본 스프레드 1%. 시간외 환전은 스프레드를 적용한 뒤 다음 영업일 09:30경 실시간 환율로 다시 정산해 차액을 원화로 환급·징수합니다. 매매기준환율은 제휴은행(신한·하나) 고시 기준.' },
+              note:'95% 우대는 2026.03.06 공지로 유효가 재확인됐으나 <b>종료일이 없고 "사전고지 없이 변경될 수 있음"</b>이 명시돼 있습니다. 기본 스프레드 1%.<br>시간외 환전은 스프레드 적용 후 다음 영업일 09:30경 실시간 환율로 재정산해 차액을 원화로 환급·징수합니다.' },
   namuh:    { rate:0.25, minUSD:0,    prefRate:0.95, prefLabel:'5% 우대',
               note:'USD 일반고객 5% 우대(환전 1천만원 미만). 고객등급·금액별로 30~80%까지 우대.' },
   samsung:  { rate:0.25, minUSD:10, prefRate:1.00, prefLabel:'기본(우대 없음)',
-              note:'<b>미국주식 최소수수료 온라인 USD 10 · 오프라인 USD 20</b>(주문 건당)이 있습니다. 소액으로 자주 사면 0.25%보다 이 최소수수료가 더 크게 걸립니다. 환전 이벤트 신청 시 USD 95% 우대(스프레드 0.05%).' },
+              note:'<b>미국주식 최소수수료 온라인 USD 10 · 오프라인 USD 20</b>(주문 건당)이 있습니다.<br>소액으로 자주 사면 0.25%보다 최소수수료가 더 크게 걸립니다. 환전 이벤트 신청 시 USD 95% 우대(스프레드 0.05%).' },
   kb:       { rate:0.25, minUSD:0,    prefRate:1.00, prefLabel:'기본(우대 없음)',
               note:'글로벌원마켓 서비스를 신청한 계좌는 기준환율 중간값이 적용돼 환전비용이 사실상 없습니다.' },
   shinhan:  { rate:0.25, minUSD:0.01, prefRate:1.00, prefLabel:'기본(우대 없음)',
               note:'미국주식 최소수수료 $0.01.' },
   daishin:  { rate:0.25, minUSD:0,    prefRate:1.00, prefLabel:'우대 없음',
               warn:'현행 환전 우대율 자체가 미공시',
-              note:'<b>「온라인 환전수수료 95% 할인」 이벤트는 2023년판(~2023.12.29)을 끝으로 종료</b>됐고 2024년 이후 재개 기록이 없습니다. 2026.08 신설된 일반환전 서비스 공지에도 "종합계좌의 우대율 적용"이라고만 적혀 있어 실제 우대율을 알 수 없습니다. 매수 최소주문금액 $10. SEC Fee는 2025.05.13 매매분부터 미부과.' },
+              note:'<b>「온라인 환전수수료 95% 할인」은 2023년판(~2023.12.29)을 끝으로 종료</b>됐고 2024년 이후 재개 기록이 없습니다.<br>2026.08 신설 일반환전 서비스 공지에도 "종합계좌의 우대율 적용"이라고만 적혀 있어 실제 우대율을 알 수 없습니다. 매수 최소주문금액 $10.' },
   mirae:    { rate:0.25, minUSD:0,    prefRate:null, prefLabel:'우대 없음 · 전화 신청제',
               warn:'기준 스프레드 미공시 — 우대율을 %로 환산할 수 없음',
-              note:'<b>기본 우대가 없고, 우대를 받으려면 고객센터(1588-6800)에 전화로 신청</b>해야 합니다. HTS·MTS에서는 신청이 안 되며 1년 단위 연장이 필요합니다. 자사 자료(2020년)에 기준 스프레드가 달러당 5원으로 나오는데 현재도 유효한지는 확인되지 않았습니다. 미국주식 최소수수료는 없습니다.' },
+              note:'<b>기본 우대 없음. 우대는 고객센터(1588-6800) 전화 신청만 가능</b>하고 HTS·MTS에서는 안 됩니다. 1년 단위 연장 필요.<br>자사 자료(2020년)의 기준 스프레드는 달러당 5원. 최소수수료 없음.' },
   kis:      { rate:0.25, minUSD:0,    prefRate:0.40, prefLabel:'60% 우대 · 자동',
-              note:'<b>실시간환전 시 USD 기준 60% 기본우대가 신청 없이 자동 적용</b>됩니다(공식 수수료안내 환전우대 섹션). 고객등급(VIP·골드)·자산 요건을 채우면 80%, 거액(USD 5만·10만 이상)은 80% 초과도 가능하나 신청제입니다. 추가우대 유지 조건은 골드 등급 + 예탁자산 1억원. 통화별로 우대율이 다르고 외환시장 급변동 시 우대가 빠질 수 있습니다. 환전 가능시간 USD 09:00~23:30.' },
+              note:'<b>실시간환전 시 USD 60% 기본우대가 신청 없이 자동 적용</b>됩니다. 등급(VIP·골드)·자산 요건 충족 시 80%, 거액(USD 5만·10만↑)은 80% 초과도 가능하나 신청제.<br>추가우대 유지 조건은 골드 등급 + 예탁자산 1억원. 통화별로 다르고 외환시장 급변동 시 빠질 수 있음. 환전 가능시간 09:00~23:30.' },
   kiwoom:   { rate:0.25, minUSD:0,    prefRate:null, prefLabel:'0% · 신청 시 최대 95%',
               warn:'기준 스프레드 미공시 · 이벤트 신청 가능 여부 불명',
-              note:'<b>이벤트를 신청하지 않은 계좌는 우대가 없습니다.</b> 「해외주식 0.07% + 환전우대 최대 95%」 이벤트는 비대면계좌 대상이고 <b>계좌마다 따로 신청</b>해야 하며 신청일부터 1년, 거래가 있으면 자동 연장됩니다. 통화별로 우대율이 다르다고만 하고 표는 없습니다. 2025년 말 금융당국 권고로 증권사 환전 이벤트가 대거 조기 종료돼 지금도 신청 가능한지 확인이 필요합니다. 일반 매매 최소수수료 없음.' },
+              note:'<b>이벤트 미신청 계좌는 우대 없음.</b> 「해외주식 0.07% + 환전우대 최대 95%」는 비대면계좌 대상이고 <b>계좌마다 따로 신청</b>, 신청일부터 1년·거래 시 자동 연장.<br>2025년 말 금융당국 권고로 환전 이벤트가 대거 조기 종료돼 현재 신청 가능 여부는 확인이 필요합니다. 최소수수료 없음.' },
   hana:     { rate:0.25, minUSD:0,    prefRate:null, prefLabel:'미확인',
               warn:'하나증권 본체 계좌의 환전 스프레드·우대율 미공시',
-              note:'최소수수료 상충은 해소됐습니다 — 구 페이지(USD 5)는 2021년 5월 최종수정된 폐기본이고 현행 수수료표에는 미국 최소수수료 조항이 없습니다. 환전은 본체 계좌 수치가 공시되지 않았고, 별도 상품인 <b>하나 해외주식전용 통장</b>(하나은행 연계)은 기본 50% 우대 + 이벤트로 입금 100%·출금 80% 우대(~2026.12.31)이며 정규시간 +0.2원 / 시간외 +0.5~1.0원 구조입니다.' }
+              note:'최소수수료 없음. 구 페이지의 USD 5는 2021년 5월 이후 갱신되지 않은 폐기본입니다.<br>본체 계좌 환전 수치는 미공시. 별도 상품인 <b>하나 해외주식전용 통장</b>(하나은행 연계)은 기본 50% 우대 + 이벤트로 입금 100%·출금 80%(~2026.12.31), 정규시간 +0.2원 / 시간외 +0.5~1.0원.' }
 };
 
 var EVENTS = {
-  meritz:   { type:'auto', hi:true, short:'국내주식 <b>완전 무료</b> + USD 환전 무료<br><span class=\'mute\'>26.1.4 이전 개설분은 미국주식도 무료</span>', cap:'누구나(기존 고객 포함) · 월 약정 200억원 한도', period:'2026.06.30 ~ 12.31',
+  meritz:   { type:'auto', hi:true, short:'국내주식 <b>완전 무료</b> + USD 환전 무료<br><span class=\'mute\'>26.1.4 이전 개설분은 미국주식도 무료</span>', cap:'누구나(기존 고객 포함) · 신청 불필요 · 월 약정 200억원 한도', period:'2026.06.30 ~ 12.31',
               benefit:'국내주식 <b>완전 무료</b> + <b>USD 환전 무료</b><br><span class="mute">유관기관제비용까지 회사가 부담</span>',
               dur:'~2026.12.31',
               cond:'<b>신규·기존 고객 구분 없이 누구나</b>(개인 한정, 법인 제외) — Super365 계좌 개설만 하면 자동 적용<br><b>2026.01.04 이전 개설 계좌는 미국주식(소수점 포함)까지 무료</b>, 2026.01.05 이후 개설분은 미국주식 0.07%(소수점 0.25%)<br>월 약정액 200억원까지 무료, 초과 시 D+2영업일~월말 기본요율(0.009%), 익월 1일 자동 복원<br>K-OTC 등 비상장 주식·오프라인·ARS·반대매매 제외<br>종료 후 국내 0.009% · 미국 0.07% · USD 환율우대 95%로 전환' },
-  namuh:    { type:'auto', hi:true, short:'국내주식 <b>완전 무료</b> 24개월', cap:'생애 최초·휴면 · 연 누적 1.5조원 한도', period:'2026.07.01 ~ 12.31 개설분',
+  namuh:    { type:'auto', hi:true, short:'국내주식 <b>완전 무료</b> 24개월', cap:'생애 최초·휴면 · 신청 불필요 · 연 누적 1.5조원 한도', period:'2026.07.01 ~ 12.31 개설분',
               benefit:'국내주식 수수료 <b>완전 무료</b><br><span class="mute">유관기관제비용까지 회사가 부담</span>',
               dur:'24개월',
               cond:'생애 최초 신규 고객 + 휴면 고객<br>나무 MTS/HTS/나무MAX 주문 한정 · 1인 1계좌<br>연 누적 거래 1.5조원 초과 시 해당 연도 말까지 중단' },
-  eugene:   { type:'auto', hi:true, short:'국내주식 <b>0.0049%</b> 1년', cap:'비대면 최초 신규만 · 자동 적용', period:'2026.01.01 ~ 12.31',
+  eugene:   { type:'auto', hi:true, short:'국내주식 <b>0.0049%</b> 1년', cap:'비대면 최초 신규만 · 신청 불필요 · 자동 적용', period:'2026.01.01 ~ 12.31',
               benefit:'국내주식 <b>0.0049%</b><br><span class="mute">선물 0.001% · 옵션 0.05% 동반 우대</span>',
               dur:'1년',
               cond:'비대면 종합계좌 최초 신규 개설 고객(법인 제외)<br>계좌 개설일부터 자동 적용<br>개설 후 관리점·관리자 변경 시 미적용' },
@@ -1067,6 +1142,16 @@ function fxSpread(o){
   if(o.prefRate !== null && o.prefRate !== undefined) return 1.0 * o.prefRate;
   return null;
 }
+// 조건 키워드 강조 — 한 번의 정규식 패스라 중복 래핑이 없다.
+// 긴 표현을 앞에 둬야 '신청 불필요'가 '신청'으로 잘리지 않는다.
+var TGT_RE = /(신청\s?불필요|별도\s?신청\s?없이|자동\s?적용|자동신청\s?아님|신청\s?필수|신청\s?불가|생애\s?최초|생애\s?첫|최초\s?신규|신규\s?개설|최초\s?개설|장기미거래|미거래|무거래|휴면|누구나|최초|신규|신청)/g;
+var TGT_OK = /^(신청\s?불필요|별도\s?신청\s?없이|자동\s?적용)$/;   // 신청 안 해도 되는 것 = 초록
+function hlTarget(html){
+  return html ? html.replace(TGT_RE, function(m){
+    return '<span class="' + (TGT_OK.test(m) ? 'tgt-ok' : 'tgt') + '">' + m + '</span>';
+  }) : html;
+}
+
 var CHIP = {
   auto:  '<span class="chip chip-auto">자동</span>',
   apply: '<span class="chip chip-apply">신청</span>',
@@ -1117,12 +1202,12 @@ function sortMasterRows(){
 }
 
 function updateSortHeaders(){
-  var ths = document.querySelectorAll('#t-master th.sortable');
-  for(var i = 0; i < ths.length; i++){
-    var th = ths[i];
-    var on = th.getAttribute('data-key') === masterSort.key;
-    th.classList.toggle('on', on);
-    var arrow = th.querySelector('.arrow');
+  var els = document.querySelectorAll('#t-master [data-key]');
+  for(var i = 0; i < els.length; i++){
+    var el = els[i];
+    var on = el.getAttribute('data-key') === masterSort.key;
+    el.classList.toggle('on', on);
+    var arrow = el.querySelector('.arrow');
     if(arrow) arrow.textContent = on ? (masterSort.dir === 1 ? '▲' : '▼') : '▲▼';
   }
 }
@@ -1199,19 +1284,20 @@ function renderMaster(){
 
     // 이벤트
     var evCell = CHIP[ev.type] + '<div class="evt-line">' + ev.short + '</div>' +
-                 (ev.cap ? '<div class="evt-cap">' + ev.cap + '</div>' : '') +
+                 (ev.cap ? '<div class="evt-cap">' + hlTarget(ev.cap) + '</div>' : '') +
                  '<div class="evt-period">' + ev.period + '</div>';
 
     // 회사 규모
     var sz = SIZE[b.id];
-    var szCell = '<span class="big">' + sz.eq.toFixed(2) + '조</span>' +
-      '<div class="bsub">규모 ' + sz.rank + '위 · 총자산 ' +
-      (sz.ta === null ? '미확인' : sz.ta.toFixed(0) + '조') + '</div>';
+    var szCell = '<div class="bname">' + b.name + '</div>' +
+      '<div class="bsub">' + b.acct + '</div>' +
+      '<div class="bsize"><div class="bsize-rank">규모 <b>' + sz.rank + '위</b></div>' +
+      '<div class="bsize-amt">자기자본 ' + sz.eq.toFixed(2) + '조' +
+      (sz.ta === null ? '' : ' · 총자산 ' + sz.ta.toFixed(0) + '조') + '</div></div>';
 
     return '<tr class="' + (ev.hi ? 'hi' : '') + '" data-broker="' + b.name + '">' +
       '<td class="rank">' + (i+1) + '</td>' +
-      '<td class="l nw"><div class="bname">' + b.name + '</div><div class="bsub">' + b.acct + '</div></td>' +
-      '<td class="nw">' + szCell + '</td>' +
+      '<td class="l nw">' + szCell + '</td>' +
       '<td class="c-dom nw">' + domRate + '</td>' +
       '<td class="c-dom nw">' + domEff + '</td>' +
       '<td class="nw">' + ovRate + '</td>' +
@@ -1220,17 +1306,27 @@ function renderMaster(){
       '</tr>';
   }).join('');
 
-  // 비고
+  // 비고 — 증권사별 카드 + 항목별 분리
   var notes = [];
   DOMESTIC.forEach(function(b){
     var ov = OVERSEAS[b.id];
-    var parts = [];
-    if(b.warn) parts.push('<span class="chip chip-warn">확인필요</span> ' + b.warn + '.');
-    if(b.note) parts.push(b.note);
-    if(ov.warn) parts.push('<span class="chip chip-warn">확인필요</span> ' + ov.warn + '.');
-    if(ov.note) parts.push(ov.note);
-    notes.push('<div class="note-item" data-broker="' + b.name + '">' +
-      '<span class="nm">' + b.name + '</span><span>' + parts.join(' ') + '</span></div>');
+    var rows = [];
+    if(b.note)  rows.push({ k:'국내주식',      v:b.note });
+    if(ov.note) rows.push({ k:'미국주식 · 환전', v:ov.note });
+    var w = [];
+    if(b.warn)  w.push(b.warn);
+    if(ov.warn) w.push(ov.warn);
+    if(w.length) rows.push({ k:'확인필요', v:w.join('<br>'), warn:true });
+
+    notes.push('<div class="note-card" data-broker="' + b.name + '">' +
+      '<div class="note-name">' + b.name + '</div>' +
+      '<div class="note-body">' +
+        rows.map(function(r){
+          return '<div class="note-row' + (r.warn ? ' warn' : '') + '">' +
+                 '<span class="note-k">' + r.k + '</span>' +
+                 '<span class="note-v">' + r.v + '</span></div>';
+        }).join('') +
+      '</div></div>');
   });
   document.getElementById('notes-master').innerHTML = notes.join('');
 }
@@ -1278,7 +1374,7 @@ function renderPerks(){
       '<td style="vertical-align:top;"><span class="chip ' + k.cls + '">' + k.label + '</span></td>' +
       '<td class="l" style="vertical-align:top; min-width:150px; font-weight:800;">' + p.name + '</td>' +
       '<td class="l" style="vertical-align:top; min-width:170px;">' + p.benefit + '</td>' +
-      '<td class="l" style="vertical-align:top; min-width:320px; font-size:12px; color:var(--ink-soft); line-height:1.65;">' + p.cond + '</td>' +
+      '<td class="l" style="vertical-align:top; min-width:320px; font-size:12px; color:var(--ink-soft); line-height:1.65;">' + hlTarget(p.cond) + '</td>' +
       '<td class="nw" style="vertical-align:top; font-size:11.5px; color:var(--ink-mute); font-weight:700;">' + p.term + '</td>' +
       '</tr>';
   }).join('');
@@ -1298,7 +1394,7 @@ function renderEvents(){
       '<td>' + CHIP[e.type] + '</td>' +
       '<td class="l" style="min-width:200px; line-height:1.55;">' + e.benefit + '</td>' +
       '<td class="nw">' + e.dur + '</td>' +
-      '<td class="l" style="min-width:300px; font-size:12px; color:var(--ink-soft); line-height:1.6;">' + e.cond + '</td>' +
+      '<td class="l" style="min-width:300px; font-size:12px; color:var(--ink-soft); line-height:1.6;">' + hlTarget(e.cond) + '</td>' +
       '<td class="nw" style="font-size:11.5px; color:var(--ink-mute);">' + e.period.replace(' ~ ', '<br>~ ') + '</td>' +
       '</tr>';
   }).join('');
@@ -1395,8 +1491,9 @@ function renderCalc(){
 // 검색 / 입력
 // ============================================================
 // 종합표 헤더 클릭 → 오름차순 ↔ 내림차순
-document.querySelectorAll('#t-master th.sortable').forEach(function(th){
-  th.addEventListener('click', function(){
+document.querySelectorAll('#t-master [data-key]').forEach(function(th){
+  th.addEventListener('click', function(e){
+    e.stopPropagation();
     var key = th.getAttribute('data-key');
     if(masterSort.key === key) masterSort.dir = -masterSort.dir;
     else { masterSort.key = key; masterSort.dir = 1; }
