@@ -1,0 +1,9 @@
+# 조사 노하우는 공개하지 않는다 (로컬에만 보관)
+갱신가이드.md
+references/
+archive/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini

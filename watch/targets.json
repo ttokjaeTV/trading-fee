@@ -1,0 +1,16 @@
+{
+  "pattern": "fee",
+  "targets": [
+    { "id": "meritz",   "label": "메리츠증권 수수료·세금",     "tier": 1, "url": "https://home.imeritz.com/mobile/content/feeinfo/tax.html" },
+    { "id": "mirae",    "label": "미래에셋증권 수수료 (다이렉트)", "tier": 1, "url": "https://securities.miraeasset.com/imf/200/imf602.do", "encoding": "euc-kr" },
+    { "id": "kis",      "label": "한국투자증권 수수료",         "tier": 1, "url": "https://www.truefriend.com/main/customer/guide/_static/TF04ae010000.shtm" },
+    { "id": "namuh",    "label": "NH투자증권(나무) 수수료",     "tier": 1, "url": "https://www.mynamuh.com/tx/WMDoc.action?viewPage=/tx/customerService/chargeInfo.jsp", "encoding": "euc-kr" },
+    { "id": "samsung",  "label": "삼성증권 수수료",            "tier": 1, "url": "https://www.samsungpop.com/ux/kor/customer/guide/workproductguide/commission.do" },
+    { "id": "kb",       "label": "KB증권 비대면계좌 수수료",     "tier": 2, "url": "https://www.kbsec.com/go.able?linkcd=s060307010002", "encoding": "euc-kr" },
+    { "id": "shinhan",  "label": "신한투자증권 수수료",         "tier": 2, "url": "https://m.shinhansec.com/mweb/svif/feif/sfeif0001" },
+    { "id": "hana",     "label": "하나증권 수수료",            "tier": 2, "url": "https://www.hanaw.com/main/customer/cm/CS_060200_T2.jsp" },
+    { "id": "daishin",  "label": "대신증권 수수료 (사이보스)",   "tier": 2, "url": "https://www.daishin.com/g.ds?m=1093&p=1993&v=2484" },
+    { "id": "eugene",   "label": "유진투자증권 비대면 수수료",   "tier": 2, "url": "https://www.eugenefn.com/serv/svwc/getSvwc400p.do?svwcHeader=400&svwcLeft=412" },
+    { "id": "kakaopay", "label": "카카오페이증권 수수료",       "tier": 2, "url": "https://www.kakaopaysec.com/guide/feeGuide/dynamicPage.do" }
+  ]
+}
