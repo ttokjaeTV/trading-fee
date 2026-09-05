@@ -67,7 +67,9 @@ async function grab(t) {
       let text;
       try { text = new TextDecoder(t.encoding || 'utf-8').decode(r.buf); }
       catch { text = r.buf.toString('utf8'); }
-      return { rates: fingerprint(text, t.mode) };
+      const rates = fingerprint(text, t.mode);
+      if (!rates.length) return { error: '수치 0개 수집 — 점검 안내·차단·JS 렌더링 가능성' };
+      return { rates };
     }
     const res = await fetch(t.url, {
       method: t.method || 'GET',
@@ -96,7 +98,12 @@ async function grab(t) {
     let text;
     try { text = new TextDecoder(enc).decode(buf); }
     catch { text = buf.toString('utf8'); }
-    return { rates: fingerprint(text, t.mode) };
+    const rates = fingerprint(text, t.mode);
+    // 수치를 하나도 못 뽑았으면 성공이 아니라 실패다.
+    // 점검 안내 페이지·차단·JS 주입으로 본문이 비면 여기에 걸린다.
+    // 이걸 성공으로 저장하면 baseline이 빈 값으로 덮이고, 이후 요율이 바뀌어도 영원히 "그대로"가 나온다.
+    if (!rates.length) return { error: '수치 0개 수집 — 점검 안내·차단·JS 렌더링 가능성' };
+    return { rates };
   } catch (e) {
     return { error: e.name === 'AbortError' ? '타임아웃' : String(e.message || e).slice(0, 120) };
   } finally {
@@ -120,7 +127,9 @@ for (const t of TARGETS) {
 
   if (r.error) {
     errors.push({ ...t, error: r.error });
-    next.targets[t.id] = prev ?? { rates: [] };
+    // 이전 값을 그대로 보존한다. 빈 값으로 덮으면 다음 실행부터 조용해진다.
+    // 이전 값이 아예 없으면 키를 만들지 않아 다음에 '최초 수집'으로 잡히게 둔다.
+    if (prev) next.targets[t.id] = prev;
     console.log(`✗ ${t.label} — ${r.error}`);
     continue;
   }
@@ -177,7 +186,9 @@ if (changed.length) {
 if (errors.length) {
   lines.push('## 수집 실패', '');
   for (const e of errors) lines.push(`- ${e.label} — ${e.error}`);
-  lines.push('', '> 실패한 대상은 이전 값을 유지했습니다. 반복되면 URL이 바뀐 것일 수 있습니다.', '');
+  lines.push('', '> 실패한 대상은 **이전 값을 그대로 유지**했습니다. 감시가 멈춘 상태이므로 그 증권사는 직접 확인해야 합니다.');
+  lines.push('> `수치 0개 수집`은 접속은 됐지만 본문이 비었다는 뜻입니다 — 시스템 점검 안내, 차단, JS 렌더링 전환 중 하나입니다.');
+  lines.push('> 며칠 이상 반복되면 URL이 바뀌었거나 감시 대상에서 빼야 하는 페이지입니다.', '');
 }
 
 if (!due.length && !changed.length && !errors.length) lines.push(`변경 없음 · ${now}`);

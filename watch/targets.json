@@ -10,6 +10,9 @@
     { "id": "shinhan",  "label": "신한투자증권 수수료",         "tier": 2, "url": "https://m.shinhansec.com/mweb/svif/feif/sfeif0001" },
     { "id": "hana",     "label": "하나증권 수수료",            "tier": 2, "url": "https://www.hanaw.com/main/customer/cm/CS_060200_T2.jsp" },
     { "id": "daishin",  "label": "대신증권 수수료 (사이보스)",   "tier": 2, "url": "https://www.daishin.com/g.ds?m=1093&p=1993&v=2484" },
+    { "id": "creon",    "label": "대신증권 수수료 (크레온)",     "tier": 2, "url": "https://www.creontrade.com/g.ds?m=2185&p=2842&v=2318" },
+    { "id": "samsung_ovs", "label": "삼성증권 해외주식 수수료",  "tier": 2, "url": "https://www.samsungpop.com/ux/kor/customer/guide/workproductguide/overseasStockTab2.do" },
+    { "id": "kb_ovs",   "label": "KB증권 해외주식 수수료",       "tier": 2, "url": "https://www.kbsec.com/go.able?linkcd=s040426010003", "encoding": "euc-kr" },
     { "id": "eugene",   "label": "유진투자증권 비대면 수수료",   "tier": 2, "url": "https://www.eugenefn.com/serv/svwc/getSvwc400p.do?svwcHeader=400&svwcLeft=412" },
     { "id": "kakaopay", "label": "카카오페이증권 수수료",       "tier": 2, "url": "https://www.kakaopaysec.com/guide/feeGuide/dynamicPage.do" }
   ]
