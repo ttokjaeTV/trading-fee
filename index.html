@@ -250,11 +250,12 @@
   }
   tr.row-focus > td:first-child { box-shadow: inset 0 -1px 0 var(--accent), inset 0 1px 0 var(--accent), inset 4px 0 0 var(--accent); }
   tr.row-focus > td:last-child  { box-shadow: inset 0 -1px 0 var(--accent), inset 0 1px 0 var(--accent), inset -4px 0 0 var(--accent); }
+  /* 3초 동안 6번 깜빡인다. 흰색 ↔ 진한 주황으로 대비를 크게 줘야 눈에 들어온다. */
   @keyframes rowFlash {
-    0%, 100% { background: var(--accent-soft); }
-    30%      { background: #F7C0A4; }
+    0%, 100% { background: var(--white); }
+    50%      { background: #F0A97F; }
   }
-  tr.row-flash > td { animation: rowFlash .55s ease-in-out 2; }
+  tr.row-flash > td { animation: rowFlash .5s ease-in-out 6; }
 
   /* 이벤트 조건 한 줄 */
   .evt-cap {
@@ -1034,8 +1035,16 @@ var PERKS = [
   { id:'namuh', kind:'buy', scope:'dom', name:'국내소수점 적립식서비스', benefit:'<b>0.01%</b> <span class="mute">(소수점 일반 0.015%)</span>',
     cond:'나무 채널 기준. NH투자증권 본체 계좌의 국내주식 모으기는 일반 요율 그대로입니다', term:'상시' },
 
-  { id:'samsung', kind:'buy', scope:'dom', name:'소수단위거래', benefit:'0.12% 균일',
-    cond:'온라인·오프라인·ARS 동일. 50만원 미만 일반 요율(0.497216%)보다 유리', term:'상시' },
+  { id:'samsung', kind:'buy', scope:'dom', name:'국내 소수단위거래', benefit:'0.12% 균일',
+    cond:'온라인·오프라인·ARS 동일<br><b>최저수수료 조항이 없습니다</b> — 일반 거래는 50만원 미만이면 0.497216%가 걸리는데 소수단위거래에는 그 조항이 붙지 않습니다<br>따라서 <b>소액일수록 소수단위거래가 유리</b>합니다', term:'상시' },
+
+  { id:'samsung', kind:'caution', name:'해외 소수점 거래 <b>요율 미공시</b>', benefit:'수수료율·최소수수료 적용 여부 <b>확인 불가</b>',
+    cond:'삼성은 해외주식 소수점 적립 서비스를 제공합니다(mPOP에서 신청, 1달러부터).<br>그런데 <b>공식 수수료 페이지 어디에도 해외 소수점 요율이 없습니다</b> — 일반수수료·해외주식거래안내 전 탭에 항목 자체가 없습니다<br>★ <b>미국 최소수수료 USD 10이 소수점 거래에도 붙는지가 관건</b>입니다. 붙는다면 "1달러부터 적립"은 사실상 의미가 없어집니다<br>고객센터(1588-2323) 확인이 필요합니다',
+    term:'미확인' },
+
+  { id:'samsung', kind:'acct', name:'협의수수료', benefit:'미국 온라인 <b>0.09~0.05%</b> · 국내 온라인 <b>0.06~0.01%</b>',
+    cond:'<b>월 거래금액 3억원 이상</b>이어야 합니다(직전 3개월 월평균 자산 또는 약정금액 중 큰 금액)<br>미국: 3~10억 0.09% / 10~50억 0.07% / 50억↑ 0.05%<br>국내: 3~5억 0.06% / 5~10억 0.05% / 10~30억 0.03% / 30~50억 0.02% / 50~100억 0.015% / 100억↑ 0.01%<br><b>거래지점을 통해 신청</b>하고 주식영업 담당부서 심사 후 결정되며, <b>매 반기 재평가</b>돼 해지·조정될 수 있습니다<br>협의수수료에 유관기관제비용이 포함되고, KRX·NXT를 구별하지 않고 정률 징수합니다<br>⚠ <b>"각 시장별 최소수수료는 별도 부과될 수 있다"</b>고 명시돼 있어 미국 USD 10은 그대로 붙을 수 있습니다',
+    term:'상시 · 반기 재평가' },
 
   { id:'kb', kind:'fx', name:'글로벌 원마켓', benefit:'<b>환전수수료 없음</b>',
     cond:'한국·미국·중국·홍콩·일본·베트남 6개 시장. 매수·매도 중간값 결제라 스프레드 없음<br>일반위탁(01)·외화전용계좌 <b>신청 불가</b> · 해외주식적립식 등록계좌 불가 · 미국은 <b>95% 금액까지만 매수</b>', term:'상시' },
@@ -1130,7 +1139,8 @@ var LINKS = {
     { t:'수수료 안내 (국내)',          u:'https://www.samsungpop.com/ux/kor/customer/guide/workproductguide/commission.do' },
     { t:'신규 이벤트·환율우대',        u:'https://www.onestopsamsungpop.co.kr/entry/' },
     { t:'진행 중 이벤트 목록',         u:'https://www.samsungpop.com/ux/kor/customer/guide/eventguide/eventList.do?menuNo=01010900' },
-    { t:'해외주식 수수료',             u:'https://www.samsungpop.com/ux/kor/customer/guide/workproductguide/overseasStockTab2.do' }
+    { t:'해외주식 수수료',             u:'https://www.samsungpop.com/ux/kor/customer/guide/workproductguide/overseasStockTab2.do' },
+    { t:'협의수수료',                  u:'https://www.samsungpop.com/ux/kor/customer/guide/workproductguide/discussionCommission.do' }
   ],
   kb: [
     { t:'비대면계좌 수수료',           u:'https://www.kbsec.com/go.able?linkcd=s060307010002' },
@@ -1644,8 +1654,11 @@ renderCalc();
     var y = row.getBoundingClientRect().top + window.pageYOffset - pad;
     window.scrollTo({ top: y < 0 ? 0 : y, behavior: 'smooth' });
 
+    // 애니메이션을 매번 처음부터 다시 돌린다 (같은 행을 연달아 눌러도 깜빡이게)
+    row.classList.remove('row-flash');
+    void row.offsetWidth;
     row.classList.add('row-focus', 'row-flash');
-    setTimeout(function(){ row.classList.remove('row-flash'); }, 1300);
+    setTimeout(function(){ row.classList.remove('row-flash'); }, 3100);
   }
 
   document.addEventListener('click', function(e){
