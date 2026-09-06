@@ -242,6 +242,20 @@
   }
   .perk-tip a:hover { background: var(--accent-soft); }
 
+  /* 표 안 링크로 찾아간 행 — 어느 줄인지 바로 보이게 강조한다.
+     sticky 목차에 가려지지 않도록 스크롤 위치는 JS가 따로 잡는다. */
+  tr.row-focus > td {
+    background: var(--accent-soft) !important;
+    box-shadow: inset 0 -1px 0 var(--accent), inset 0 1px 0 var(--accent);
+  }
+  tr.row-focus > td:first-child { box-shadow: inset 0 -1px 0 var(--accent), inset 0 1px 0 var(--accent), inset 4px 0 0 var(--accent); }
+  tr.row-focus > td:last-child  { box-shadow: inset 0 -1px 0 var(--accent), inset 0 1px 0 var(--accent), inset -4px 0 0 var(--accent); }
+  @keyframes rowFlash {
+    0%, 100% { background: var(--accent-soft); }
+    30%      { background: #F7C0A4; }
+  }
+  tr.row-flash > td { animation: rowFlash .55s ease-in-out 2; }
+
   /* 이벤트 조건 한 줄 */
   .evt-cap {
     font-size: 11px; color: var(--ink-soft); font-weight: 700;
@@ -751,6 +765,10 @@
       매도 시점별 공제율 100%(~26.05.31) → 80%(~26.07.31) → 50%(~26.12.31)는 <b>전 증권사 공통 법정 스케줄</b>입니다.
       RIA에 붙는 수수료 인하·환율우대는 증권사 자율 마케팅이라 회사마다 있기도 하고 없기도 합니다 — 조사 결과 <b>토스·카카오페이·KB는 수수료 혜택이 전혀 없고</b>, 대신은 국내주식이 아니라 해외주식 매도 0.07%입니다.
       RIA는 일반 위탁계좌가 아니므로 이 표의 순위 계산에서는 제외했고, 조건부 제도표에만 실었습니다.<br>
+      · <b>미국주식 최소수수료는 금액이 작을수록 요율보다 크게 작동합니다.</b>
+      삼성증권은 온라인 <b>USD 10</b>(오프라인 USD 20)을 <b>주문 건당</b> 부과하므로, 손익분기가 약 USD 4,000(≒560만원)이고 그 아래로는 금액과 무관하게 정액이 나갑니다.
+      100만원어치를 사면 0.25%인 2,500원이 아니라 <b>약 14,000원 — 실효율 1.4%</b>가 됩니다.
+      금액별 계산기는 이 최소수수료를 반영하며, 달러 표기를 원화로 바꿀 때 <b>환율 1,400원을 가정</b>했습니다(실제 환율이 아니라 비교용 고정값입니다).<br>
       · <span class="chip chip-warn">확인필요</span> 표시는 공식 페이지에서 수치를 확인하지 못했거나 자료 간 표기가 상충하는 항목입니다. 해당 증권사에 직접 확인하시기 바랍니다.<br>
       · <b>회사 규모</b>는 자기자본(연결) 기준이며, 각 사 <b>2026년 반기보고서(2026.06.30, DART 전자공시)</b>에서 확인했습니다.
       비상장사인 토스증권·카카오페이증권만 DART 조회가 되지 않아 각 사 홈페이지의 <b>2026년 2분기 영업보고서(2026.06.30)</b>에서 확인했는데, 두 회사는 연결 재무상태표를 공시하지 않아 <b>별도(개별) 기준</b>이라 나머지 11곳과 기준이 다릅니다.
@@ -773,6 +791,10 @@
 // 데이터 — 2026-09-05 각 증권사 공식 수수료 안내 확인 기준 (13개사 전수 재조사)
 // ============================================================
 var MISC_KRX = 0.0036396; // 한국거래소 유관기관제비용 (유가·코스닥·코넥스)
+
+// 계산기에서 달러 표기 최소수수료를 원화로 환산할 때 쓰는 가정 환율.
+// 실제 환율이 아니라 비교용 고정값이며, 산출물에 가정임을 명시한다.
+var USD_KRW = 1400;
 
 // 회사 규모 — 자기자본(연결) / 총자산(연결), 단위 조원
 // 2026.06.30 반기보고서(DART) 기준.
@@ -900,7 +922,7 @@ var OVERSEAS = {
   namuh:    { rate:0.25, minUSD:0,    prefRate:0.95, prefLabel:'5% 우대',
               note:'USD 일반고객 5% 우대(환전 1천만원 미만). 고객등급·금액별로 30~80%까지 우대.<br>NH는 <b>13개사 중 유일하게 기준 스프레드를 명시</b>합니다 — "기본 환율 스프레드인 1%가 적용되며 우대정책 또는 이벤트에 따라 가감". 등급·금액 기준 중 높은 쪽이 자동 적용됩니다.' },
   samsung:  { rate:0.25, minUSD:10, prefRate:1.00, prefLabel:'기본 우대 없음',
-              note:'<b>미국주식 최소수수료 온라인 USD 10 · 오프라인 USD 20</b>(주문 건당)이 있습니다.<br>소액으로 자주 사면 0.25%보다 최소수수료가 더 크게 걸립니다.<br>기본 스프레드는 <b>매매기준율 ±1.00%</b>이고 <b>자동으로 붙는 우대는 없습니다</b> — 진행중 RIA 이벤트가 "혜택 기간 종료 후 매매기준율 - 스프레드 1.00% 적용"이라고 적어 우대 없는 상태의 요율을 회사가 직접 밝혔습니다(심사필 제26-B2650호, 2027.08.06까지 유효).<br>직전 표의 "USD 95% 우대"는 2024년 이벤트(심사필 2025.10.15 만료)에서 온 값이라 내렸습니다. 진행중 이벤트 15건 전수에 환전 우대가 없고, 우대는 "고객센터 개별 협의"로만 안내됩니다.<br>⚠ <b>야간 환전은 주간보다 비쌉니다</b> — 2026.07.30부터 정규환전(야간)의 스프레드 기준이 Mid환율에서 Bid/Ask환율로 바뀌어 매수·매도 환율이 주간 대비 확대될 수 있습니다.<br>별도로 RIA 계좌는 <b>외화→원화</b> 방향에 한해 100% 우대(~2027.01.06 환전분) — 미국주식 매수용 원화→USD에는 적용되지 않습니다.' },
+              note:'★ <b>미국주식 최소수수료 온라인 USD 10 · 오프라인 USD 20이 주문 건당</b> 붙습니다. 13개사 중 미국 최소수수료가 두 자릿수 달러인 곳은 삼성뿐입니다.<br><b>손익분기가 약 USD 4,000(≒560만원)</b>이라 그 아래로는 금액과 무관하게 정액이 나갑니다 — 100만원어치면 0.25%(2,500원)가 아니라 <b>약 14,000원, 실효율 1.4%</b>입니다(환율 1,400원 가정).<br>소액 분할매수나 적립식으로 미국주식을 사면 주문할 때마다 붙으므로 특히 불리합니다. 홍콩 HKD 400 · 중국 CNY 300 · 일본 JPY 5,000도 같은 구조입니다.<br>기본 스프레드는 <b>매매기준율 ±1.00%</b>이고 <b>자동으로 붙는 우대는 없습니다</b> — 진행중 RIA 이벤트가 "혜택 기간 종료 후 매매기준율 - 스프레드 1.00% 적용"이라고 적어 우대 없는 상태의 요율을 회사가 직접 밝혔습니다(심사필 제26-B2650호, 2027.08.06까지 유효).<br>직전 표의 "USD 95% 우대"는 2024년 이벤트(심사필 2025.10.15 만료)에서 온 값이라 내렸습니다. 진행중 이벤트 15건 전수에 환전 우대가 없고, 우대는 "고객센터 개별 협의"로만 안내됩니다.<br>⚠ <b>야간 환전은 주간보다 비쌉니다</b> — 2026.07.30부터 정규환전(야간)의 스프레드 기준이 Mid환율에서 Bid/Ask환율로 바뀌어 매수·매도 환율이 주간 대비 확대될 수 있습니다.<br>별도로 RIA 계좌는 <b>외화→원화</b> 방향에 한해 100% 우대(~2027.01.06 환전분) — 미국주식 매수용 원화→USD에는 적용되지 않습니다.' },
   kb:       { rate:0.25, minUSD:0,    prefRate:1.00, prefLabel:'기본(우대 없음)',
               note:'글로벌원마켓 서비스를 신청한 계좌는 기준환율 중간값이 적용돼 환전비용이 사실상 없습니다.' },
   shinhan:  { rate:0.25, minUSD:0.01, prefRate:1.00, prefLabel:'기본(우대 없음)',
@@ -1280,8 +1302,10 @@ function renderMaster(){
         return p.id === id && p.kind === 'buy' && (p.scope === where || p.scope === 'both');
       });
       if(!ps.length) return '';
-      return '<div class="perk-tip"><a href="#t-perk">' +
-        ps.map(function(p){ return '↓ ' + p.name; }).join('<br>') + '</a></div>';
+      // 표 전체가 아니라 해당 제도 행으로 직접 보낸다.
+      return '<div class="perk-tip">' + ps.map(function(p){
+        return '<a href="#perk-' + PERKS.indexOf(p) + '">↓ ' + p.name + '</a>';
+      }).join('<br>') + '</div>';
     }
     domRate += perkTip(b.id, 'dom');
 
@@ -1338,7 +1362,8 @@ function renderMaster(){
     // 이벤트
     var evCell = CHIP[ev.type] + '<div class="evt-line">' + ev.short + '</div>' +
                  (ev.cap ? '<div class="evt-cap">' + hlTarget(ev.cap) + '</div>' : '') +
-                 '<div class="evt-period">' + ev.period + '</div>';
+                 '<div class="evt-period">' + ev.period + '</div>' +
+                 '<div class="perk-tip"><a href="#evt-' + b.id + '">↓ 조건 자세히</a></div>';
 
     // 회사 규모
     var sz = SIZE[b.id];
@@ -1421,7 +1446,7 @@ function renderPerks(){
   document.getElementById('tb-perk').innerHTML = sorted.map(function(p){
     var k = PERK_KIND[p.kind];
     var first = p.id !== prev; prev = p.id;
-    return '<tr data-broker="' + nameOf[p.id] + '">' +
+    return '<tr id="perk-' + PERKS.indexOf(p) + '" data-broker="' + nameOf[p.id] + '">' +
       '<td class="l nw" style="vertical-align:top;">' +
         (first ? '<div class="bname">' + nameOf[p.id] + '</div>' : '<span class="mute">〃</span>') + '</td>' +
       '<td style="vertical-align:top;"><span class="chip ' + k.cls + '">' + k.label + '</span></td>' +
@@ -1442,7 +1467,7 @@ function renderEvents(){
   DOMESTIC.forEach(function(b){ nameOf[b.id] = b.name; });
   document.getElementById('tb-event').innerHTML = order.map(function(id){
     var e = EVENTS[id];
-    return '<tr class="' + (e.hi ? 'hi' : '') + '" data-broker="' + nameOf[id] + '">' +
+    return '<tr id="evt-' + id + '" class="' + (e.hi ? 'hi' : '') + '" data-broker="' + nameOf[id] + '">' +
       '<td class="l nw"><div class="bname">' + nameOf[id] + '</div></td>' +
       '<td>' + CHIP[e.type] + '</td>' +
       '<td class="l" style="min-width:200px; line-height:1.55;">' + e.benefit + '</td>' +
@@ -1517,8 +1542,15 @@ function renderCalc(){
     var orows = Object.keys(OVERSEAS).map(function(id){
       var o = OVERSEAS[id], sp = fxSpread(o);
       var comm = amount * o.rate / 100;
+      // 최소수수료는 요율보다 클 때 그것이 실제 부담이 된다.
+      // 삼성은 온라인 USD 10이라 손익분기가 약 USD 4,000(≒550만원)이고,
+      // 그 아래로는 금액과 무관하게 정액이 나간다 — 이걸 빼면 소액에서 크게 틀린다.
+      var minKrw = (o.minUSD ? o.minUSD * USD_KRW : 0);
+      var minApplied = minKrw > comm;
+      if(minApplied) comm = minKrw;
       var fx = (sp !== null) ? amount * sp / 100 : 0;
-      return { id:id, name:nameOf[id], o:o, sp:sp, comm:comm, fx:fx, total:comm+fx, unknown: sp === null };
+      return { id:id, name:nameOf[id], o:o, sp:sp, comm:comm, fx:fx,
+               total:comm+fx, unknown: sp === null, minApplied:minApplied };
     }).sort(function(x,y){ return (x.unknown?1:0) - (y.unknown?1:0) || x.total - y.total; });
 
     head.innerHTML = '<tr><th>순위</th><th class="l">증권사</th><th class="r">매매수수료율</th>' +
@@ -1529,8 +1561,10 @@ function renderCalc(){
       return '<tr class="' + (rk === 1 && !x.unknown ? 'hi' : '') + '" data-broker="' + x.name + '">' +
         '<td class="rank">' + rank + '</td>' +
         '<td class="l nw"><div class="bname">' + x.name + '</div></td>' +
-        '<td class="r nw">' + x.o.rate.toFixed(2) + '%</td>' +
-        '<td class="r nw">' + won(x.comm) + '원</td>' +
+        '<td class="r nw">' + x.o.rate.toFixed(2) + '%' +
+          (x.o.minUSD ? '<div class="bsub">최소 $' + x.o.minUSD + '</div>' : '') + '</td>' +
+        '<td class="r nw">' + won(x.comm) + '원' +
+          (x.minApplied ? '<div class="bsub"><span class="chip chip-warn" title="요율로 계산한 값보다 최소수수료가 커서 최소수수료가 적용됐습니다. 금액이 줄어도 이 아래로는 내려가지 않습니다.">최소수수료 적용</span></div>' : '') + '</td>' +
         '<td class="r nw">' + (x.unknown ? '<span class="mute">미확인</span>' : x.sp.toFixed(2) + '%') + '</td>' +
         '<td class="r nw">' + (x.unknown ? '<span class="mute">–</span>' : won(x.fx) + '원') + '</td>' +
         '<td class="r nw"><span class="big a">' + won(x.total) + '원</span>' +
@@ -1589,6 +1623,56 @@ renderPerks();
 renderEvents();
 renderLinks();
 renderCalc();
+
+// ============================================================
+// 표 안 링크(↓ 제도명 / ↓ 조건 자세히) → 해당 행으로 이동 + 강조
+// 기본 앵커 이동은 sticky 목차에 행이 가려지고, 어느 줄로 왔는지도 알 수 없다.
+// ============================================================
+(function(){
+  function focusRow(row){
+    if(!row) return;
+    document.querySelectorAll('tr.row-focus').forEach(function(tr){
+      tr.classList.remove('row-focus', 'row-flash');
+    });
+
+    // 가로 스크롤 표 안에 있으면 그 안에서도 보이게 맞춘다
+    var wrap = row.closest('.table-wrap');
+    if(wrap && wrap.scrollWidth > wrap.clientWidth) wrap.scrollLeft = 0;
+
+    var toc = document.querySelector('.toc');
+    var pad = (toc ? toc.getBoundingClientRect().height : 0) + 16;
+    var y = row.getBoundingClientRect().top + window.pageYOffset - pad;
+    window.scrollTo({ top: y < 0 ? 0 : y, behavior: 'smooth' });
+
+    row.classList.add('row-focus', 'row-flash');
+    setTimeout(function(){ row.classList.remove('row-flash'); }, 1300);
+  }
+
+  document.addEventListener('click', function(e){
+    var a = e.target.closest('.perk-tip a[href^="#"]');
+    if(!a) return;
+    var id = a.getAttribute('href').slice(1);
+    var row = document.getElementById(id);
+    if(!row) return;              // 앵커가 없으면 기본 동작에 맡긴다
+    e.preventDefault();
+    if(history.replaceState) history.replaceState(null, '', '#' + id);
+    focusRow(row);
+  });
+
+  // 강조는 다른 곳을 누르면 걷힌다 — 계속 남아 있으면 표를 읽는 데 방해가 된다
+  document.addEventListener('click', function(e){
+    if(e.target.closest('.perk-tip a') || e.target.closest('tr.row-focus')) return;
+    document.querySelectorAll('tr.row-focus').forEach(function(tr){
+      tr.classList.remove('row-focus', 'row-flash');
+    });
+  });
+
+  // 주소에 #perk-N / #evt-xx 를 달고 들어온 경우에도 같게 동작시킨다
+  if(/^#(perk-\d+|evt-[a-z]+)$/.test(location.hash)){
+    var target = document.getElementById(location.hash.slice(1));
+    if(target) setTimeout(function(){ focusRow(target); }, 80);
+  }
+})();
 </script>
 </body>
 </html>
