@@ -32,19 +32,13 @@
   .logo-name { font-size: 16px; font-weight: 900; letter-spacing: -0.3px; }
   .logo-sub { font-size: 10px; color: var(--ink-mute); font-weight: 700; letter-spacing: 1px; }
 
-  .hero { text-align: center; margin-bottom: 30px; }
-  .tag {
-    display: inline-flex; align-items: center; gap: 6px;
-    background: var(--white); border: 1.5px solid var(--accent); color: var(--accent);
-    padding: 6px 14px; border-radius: 999px;
-    font-size: 12px; font-weight: 700; margin-bottom: 22px;
+  /* 히어로를 걷어내고 제목 한 줄 + 확인일 배지만 남긴다 — 열자마자 표가 보이게 */
+  .page-title {
+    font-size: 26px; font-weight: 900; letter-spacing: -1px;
+    margin: 0 0 10px; line-height: 1.2;
   }
-  .tag .dot { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; }
-  .hero-title { font-size: 54px; font-weight: 900; letter-spacing: -2.3px; line-height: 1.07; margin-bottom: 20px; }
-  .underline-mark { background: linear-gradient(transparent 60%, var(--accent-soft) 60%); padding: 0 4px; }
-  .hero-desc { font-size: 16px; color: var(--ink-soft); line-height: 1.7; font-weight: 500; max-width: 680px; margin: 0 auto; }
   .asof-badge {
-    display: inline-block; margin-top: 18px;
+    display: inline-block; margin: 0 0 18px;
     background: var(--bg-alt); border: 1px solid var(--border);
     border-radius: 999px; padding: 7px 16px;
     font-size: 12px; font-weight: 700; color: var(--ink-mute);
@@ -52,11 +46,25 @@
   .asof-badge strong { color: var(--accent); font-weight: 800; }
 
   /* 범위 안내 박스 */
+  /* 접어 두는 박스. 필수 안내라 지우지 않고 기본은 제목 한 줄만 보이게 한다. */
   .scope-box {
     background: var(--white); border: 2px solid var(--accent);
-    border-radius: 18px; padding: 24px 26px; margin-bottom: 26px;
+    border-radius: 18px; padding: 16px 22px; margin-bottom: 22px;
   }
-  .scope-title { font-size: 17px; font-weight: 900; letter-spacing: -0.4px; margin-bottom: 18px; }
+  .scope-box[open] { padding-bottom: 24px; }
+  .scope-title {
+    font-size: 15.5px; font-weight: 900; letter-spacing: -0.4px;
+    cursor: pointer; list-style: none; display: flex; align-items: center; gap: 8px;
+  }
+  .scope-title::-webkit-details-marker { display: none; }
+  .scope-box[open] .scope-title { margin-bottom: 16px; }
+  .scope-more {
+    margin-left: auto; flex: none;
+    font-size: 11px; font-weight: 800; color: var(--accent);
+    border: 1px solid var(--accent); border-radius: 999px; padding: 3px 10px;
+  }
+  .scope-box[open] .scope-more::after { content: '접기 ▴'; }
+  .scope-box:not([open]) .scope-more::after { content: '자세히 ▾'; }
   .scope-title .hl { background: linear-gradient(transparent 58%, var(--accent-soft) 58%); padding: 0 3px; }
   .scope-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
   .scope-item { border-radius: 12px; padding: 16px 18px; }
@@ -73,11 +81,6 @@
   }
   .scope-foot b { color: var(--ink-soft); font-weight: 800; }
 
-  .scope-note {
-    max-width: 640px; margin: 12px auto 0;
-    font-size: 12.5px; color: var(--ink-mute); font-weight: 600; line-height: 1.65;
-  }
-  .scope-note b { color: var(--ink-soft); font-weight: 800; }
 
   .top-cta {
     background: var(--bg-alt); border: 1px solid var(--border); border-radius: 16px;
@@ -378,17 +381,16 @@
   @media (max-width: 768px) {
     body { padding: 16px 12px; }
     header { margin-bottom: 24px; }
-    .hero { margin-bottom: 22px; }
-    .hero-title { font-size: 29px !important; letter-spacing: -1.1px !important; line-height: 1.18 !important; }
-    .hero-desc { font-size: 14px; }
-    .hero-desc br { display: none; }
-    .tag { font-size: 11px; padding: 5px 12px; margin-bottom: 18px; }
     .top-cta { flex-direction: column; align-items: stretch; padding: 16px; margin-bottom: 20px; }
     .top-cta-text { font-size: 13px; line-height: 1.55; }
     .top-cta-links { width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
     .top-cta-link { justify-content: center; font-size: 12px; padding: 10px 8px; }
-    .scope-box { padding: 18px 16px; border-radius: 14px; margin-bottom: 20px; }
-    .scope-title { font-size: 14.5px; line-height: 1.45; margin-bottom: 14px; }
+    .page-title { font-size: 21px; letter-spacing: -0.8px; }
+    .asof-badge { font-size: 11px; padding: 6px 12px; line-height: 1.5; }
+    .scope-box { padding: 14px; border-radius: 14px; margin-bottom: 18px; }
+    .scope-title { font-size: 13.5px; line-height: 1.45; gap: 6px; }
+    .scope-box[open] .scope-title { margin-bottom: 12px; }
+    .scope-more { font-size: 10px; padding: 2px 8px; }
     .scope-grid { grid-template-columns: 1fr !important; gap: 10px; }
     .scope-item { padding: 14px; }
     .scope-v { font-size: 12.5px; line-height: 1.65; }
@@ -426,7 +428,7 @@
     footer { padding: 24px 0 16px; font-size: 11px; }
   }
   @media (max-width: 380px) {
-    .hero-title { font-size: 25px !important; }
+    .page-title { font-size: 19px; }
     .top-cta-links { grid-template-columns: 1fr !important; }
   }
 </style>
@@ -444,19 +446,8 @@
     </div>
   </header>
 
-  <div class="hero">
-    <span class="tag"><span class="dot"></span>증권사 수수료 비교표</span>
-    <h1 class="hero-title">
-      증권사 수수료,<br>
-      <span class="underline-mark">한 장에 다</span> 모았습니다
-    </h1>
-    <p class="hero-desc">
-      국내 13개 증권사의 <b>일반 위탁계좌</b> 기준 국내주식 수수료 · 미국주식 수수료 · 환전 수수료 · 신규계좌 이벤트를<br>
-      각 사 공식 수수료 안내에서 그대로 옮겨 한 표에 정리했습니다.
-    </p>
-    <div class="asof-badge">데이터 확인일 <strong>2026년 9월 5일</strong> · 비대면 <strong>일반 위탁계좌</strong> · 온라인 주문 기준</div>
-    <div class="scope-note">※ <b>지금 계좌를 새로 여는 경우</b>를 기준으로 정리한 표입니다. 연금저축 · IRP · 중개형ISA 등 절세계좌는 제외했습니다.</div>
-  </div>
+  <h1 class="page-title">증권사 수수료 비교표</h1>
+  <div class="asof-badge">데이터 확인일 <strong>2026년 9월 5일</strong> · 비대면 <strong>일반 위탁계좌</strong> · 온라인 주문 기준 · 13개사</div>
 
   <div class="top-cta">
     <div class="top-cta-text">
@@ -474,9 +465,9 @@
     </div>
   </div>
 
-  <!-- 이 표의 범위 -->
-  <div class="scope-box">
-    <div class="scope-title">📌 이 표는 <span class="hl">지금 계좌를 새로 여는 분</span> 기준입니다</div>
+  <!-- 이 표의 범위 — 필수 안내라 빼지 않고 접어 둔다. 처음엔 한 줄만 보인다. -->
+  <details class="scope-box">
+    <summary class="scope-title"><span>📌 이 표는 <span class="hl">지금 계좌를 새로 여는 분</span> 기준입니다</span><span class="scope-more"></span></summary>
     <div class="scope-grid">
       <div class="scope-item ok">
         <div class="scope-k">이 표로 알 수 있는 것</div>
@@ -498,7 +489,7 @@
       실제로 메리츠 비대면 평생우대(2022년 종료)처럼 <b>지금은 못 받지만 기존 가입자에게는 계속 적용되는 요율</b>이 회사마다 남아 있습니다.
       반대로 관리자 지정·주거래지점 변경·부가서비스 가입만으로 <b>우대가 사라지는 경우</b>도 있습니다.
     </div>
-  </div>
+  </details>
 
   <div class="toc">
     <input type="text" id="search" class="toc-search" placeholder="🔍 증권사 이름으로 찾기 (예: 키움)">
