@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-08 10:08 KST",
+  "checked_at": "2026-09-09 10:12 KST",
   "targets": {
     "meritz": {
       "rates": [
@@ -59,7 +59,7 @@
         0.6,
         0.7
       ],
-      "checked_at": "2026-09-08 10:08 KST"
+      "checked_at": "2026-09-09 10:12 KST"
     },
     "mirae": {
       "rates": [
@@ -97,7 +97,7 @@
         0.495,
         0.5
       ],
-      "checked_at": "2026-09-08 10:08 KST"
+      "checked_at": "2026-09-09 10:12 KST"
     },
     "mirae_misc": {
       "rates": [
@@ -123,7 +123,7 @@
         0.42,
         0.48
       ],
-      "checked_at": "2026-09-08 10:08 KST"
+      "checked_at": "2026-09-09 10:12 KST"
     },
     "kis": {
       "rates": [
@@ -176,7 +176,7 @@
         0.4971487,
         0.4977177
       ],
-      "checked_at": "2026-09-08 10:08 KST"
+      "checked_at": "2026-09-09 10:12 KST"
     },
     "namuh": {
       "rates": [
@@ -225,7 +225,7 @@
         0.51,
         0.6
       ],
-      "checked_at": "2026-09-08 10:08 KST"
+      "checked_at": "2026-09-09 10:12 KST"
     },
     "samsung": {
       "rates": [
@@ -249,7 +249,7 @@
         0.447216,
         0.497216
       ],
-      "checked_at": "2026-09-08 10:08 KST"
+      "checked_at": "2026-09-09 10:12 KST"
     },
     "kb": {
       "rates": [
@@ -274,7 +274,7 @@
         0.55,
         0.5956
       ],
-      "checked_at": "2026-09-08 10:08 KST"
+      "checked_at": "2026-09-09 10:12 KST"
     },
     "shinhan": {
       "rates": [
@@ -366,7 +366,7 @@
         0.534,
         0.7
       ],
-      "checked_at": "2026-09-08 10:08 KST"
+      "checked_at": "2026-09-09 10:12 KST"
     },
     "hana": {
       "rates": [
@@ -421,7 +421,7 @@
         0.55,
         0.6
       ],
-      "checked_at": "2026-09-07 09:56 KST"
+      "checked_at": "2026-09-09 10:12 KST"
     },
     "daishin": {
       "rates": [
@@ -481,7 +481,7 @@
         0.51,
         0.7
       ],
-      "checked_at": "2026-09-08 10:08 KST"
+      "checked_at": "2026-09-09 10:12 KST"
     },
     "creon": {
       "rates": [
@@ -526,14 +526,14 @@
         0.51,
         0.7
       ],
-      "checked_at": "2026-09-08 10:08 KST"
+      "checked_at": "2026-09-09 10:12 KST"
     },
     "samsung_ovs": {
       "rates": [
         0.25,
         0.5
       ],
-      "checked_at": "2026-09-08 10:08 KST"
+      "checked_at": "2026-09-09 10:12 KST"
     },
     "kb_ovs": {
       "rates": [
@@ -551,7 +551,7 @@
         0.13,
         0.25
       ],
-      "checked_at": "2026-09-06 16:06 KST"
+      "checked_at": "2026-09-09 10:12 KST"
     },
     "eugene": {
       "rates": [
@@ -596,7 +596,7 @@
         0.5,
         0.6
       ],
-      "checked_at": "2026-09-08 10:08 KST"
+      "checked_at": "2026-09-09 10:12 KST"
     },
     "kakaopay": {
       "rates": [
@@ -610,7 +610,7 @@
         0.2,
         0.49
       ],
-      "checked_at": "2026-09-08 10:08 KST"
+      "checked_at": "2026-09-09 10:12 KST"
     }
   }
 }
