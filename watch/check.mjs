@@ -121,8 +121,25 @@ const next = { checked_at: now, targets: {} };
 const changed = [];
 const errors = [];
 
+/**
+ * 일시적 실패 재시도.
+ * NH 본사 페이지처럼 연속 호출 시 빈 응답을 주는 곳, 간헐적 네트워크 실패가 실재한다.
+ * 2026-09-18 실측: 하나·신한·KB해외·유진이 리포트에 fetch failed로 찍혔으나 모두 URL은 정상이었다.
+ * 헛알림(=조사자가 멀쩡한 페이지를 뒤지게 만드는 비용)을 줄이기 위해 한 번 더 시도한다.
+ */
+async function grabWithRetry(t) {
+  const first = await grab(t);
+  const failed = first.error || (first.rates && first.rates.length === 0);
+  if (!failed) return first;
+  await new Promise(r => setTimeout(r, 4000));
+  const second = await grab(t);
+  const stillFailed = second.error || (second.rates && second.rates.length === 0);
+  if (!stillFailed) console.log(`  ↻ ${t.label} — 재시도 성공`);
+  return second;
+}
+
 for (const t of TARGETS) {
-  const r = await grab(t);
+  const r = await grabWithRetry(t);
   const prev = base.targets?.[t.id];
 
   if (r.error) {
