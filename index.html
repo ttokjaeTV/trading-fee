@@ -581,6 +581,8 @@
     </div>
     <div class="notes">
       <div class="note-item"><span class="nm">공통</span><span>표기 요율에 유관기관제비용이 포함된 값입니다. 삼성증권은 MTS·HTS 동일 구간이 적용되고, 신한투자증권은 MTS만 0.1891639% 단일 요율입니다.</span></div>
+      <div class="note-item"><span class="nm">구간 경계</span><span>삼성증권은 "미만" 기준이라 <b>경계 금액이 윗 구간</b>에 들어갑니다(50만원 → 0.147216%+1,500원 = 2,236원, 1,000만원 → 0.127216%+3,000원 = 15,722원). 신한투자증권은 "이하" 기준이라 경계 금액이 아랫 구간입니다.</span></div>
+      <div class="note-item"><span class="nm">유관기관제비용</span><span>표·계산기에 포함·가산한 유관기관제비용은 <b>주식(유가·코스닥·코넥스) 요율 0.0036396%</b> 기준입니다. <b>ETF·ETN은 0.0042087%</b>라 별도 부과 증권사(토스·키움 등)에서 ETF를 거래하면 1,000만원당 약 57원 더 붙습니다.</span></div>
     </div>
   </div>
 
@@ -686,6 +688,9 @@
         <thead id="th-calc"></thead>
         <tbody id="tb-calc"></tbody>
       </table>
+    </div>
+    <div class="notes">
+      <div class="note-item"><span class="nm">국내 계산 기준</span><span>유관기관제비용은 <b>주식 요율 0.0036396%</b>로 계산합니다. ETF·ETN은 0.0042087%라, 유관기관제비용을 별도로 받는 증권사에서는 ETF 거래 시 1,000만원당 약 57원이 더 붙습니다.</span></div>
     </div>
   </div>
 
@@ -884,25 +889,29 @@ var DOMESTIC = [
     note:'<b>MTS(M-able) 0.12% / HTS 0.015%로 8배 차이</b>납니다. 매체 선택에 특히 주의.<br>유관기관제비용 포함. KB는 유관기관수수료를 KOSPI·KOSDAQ·KONEX 0.0044792% / ELW·ETF·ETN 0.0050483% / K-OTC 0.099%로 공시하고, 평생·5년 수수료 혜택의 하한 요율이 이 값과 자릿수까지 일치합니다.<br>KRX 표준 원가(0.0036396%)보다 0.0008396%p 높은데 차액 구성은 공시돼 있지 않습니다.<br>수수료 안내의 "(KRX, NXT 포함)"은 유관기관 포함이 아니라 <b>KRX·NXT 체결분을 아우른 요율 범위</b>라는 뜻입니다(NXT 거래는 표기 요율 대비 0.001% 인하).' },
 
   { id:'samsung', name:'삼성증권', acct:'온라인(구간별)',
+    // 삼성 공식 구간은 "50만원 미만 / 50만원 이상~1천만원 미만 / 1천만원 이상~5천만원 미만 …"
+    // → 경계 금액은 윗 구간에 속한다(max 미만). tierUpperExclusive:true
+    tierUpperExclusive:true,
     tiers:[
       {max:500000, rate:0.497216, add:0, label:'50만원 미만'},
-      {max:10000000, rate:0.147216, add:1500, label:'50만원 ~ 1천만원'},
-      {max:50000000, rate:0.127216, add:3000, label:'1천만원 ~ 5천만원'},
-      {max:100000000, rate:0.117216, add:0, label:'5천만원 ~ 1억원'},
-      {max:300000000, rate:0.097216, add:0, label:'1억원 ~ 3억원'},
+      {max:10000000, rate:0.147216, add:1500, label:'50만원 이상 ~ 1천만원 미만'},
+      {max:50000000, rate:0.127216, add:3000, label:'1천만원 이상 ~ 5천만원 미만'},
+      {max:100000000, rate:0.117216, add:0, label:'5천만원 이상 ~ 1억원 미만'},
+      {max:300000000, rate:0.097216, add:0, label:'1억원 이상 ~ 3억원 미만'},
       {max:Infinity, rate:0.077216, add:0, label:'3억원 이상'}
     ],
     misc:MISC_KRX, miscIncluded:true,
     note:'POP HTS·MTS 동일 구간 요율입니다. 이벤트 종료 후 0.015%가 적용된다는 안내는 이벤트 본문 원문에서 확인됐습니다("366일 이후 0.015% 수수료는 당사 사정에 따라 추후 변동될 수 있습니다").' },
 
   { id:'shinhan', name:'신한투자증권', acct:'비대면 종합', mts:0.1891639,
+    // 신한 구간은 "50만원 이하 / 50만원 초과~300만원 이하 … / 2억원 초과" → 경계 금액은 아랫 구간(max 이하)
     tiersHts:[
       {max:500000, rate:0.4991639, add:0, label:'50만원 이하'},
-      {max:3000000, rate:0.1491639, add:1500, label:'50만원 ~ 300만원'},
-      {max:30000000, rate:0.1391639, add:2000, label:'300만원 ~ 3천만원'},
-      {max:50000000, rate:0.1291639, add:0, label:'3천만원 ~ 5천만원'},
-      {max:100000000, rate:0.1191639, add:0, label:'5천만원 ~ 1억원'},
-      {max:200000000, rate:0.0991639, add:0, label:'1억원 ~ 2억원'},
+      {max:3000000, rate:0.1491639, add:1500, label:'50만원 초과 ~ 300만원 이하'},
+      {max:30000000, rate:0.1391639, add:2000, label:'300만원 초과 ~ 3천만원 이하'},
+      {max:50000000, rate:0.1291639, add:0, label:'3천만원 초과 ~ 5천만원 이하'},
+      {max:100000000, rate:0.1191639, add:0, label:'5천만원 초과 ~ 1억원 이하'},
+      {max:200000000, rate:0.0991639, add:0, label:'1억원 초과 ~ 2억원 이하'},
       {max:Infinity, rate:0.0891639, add:0, label:'2억원 초과'}
     ],
     misc:MISC_KRX, miscIncluded:true,
@@ -1243,12 +1252,15 @@ function korAmount(n){
   return n.toLocaleString('ko-KR') + '원';
 }
 function rateTxt(v){ return v.toFixed(7).replace(/0+$/,'').replace(/\.$/,'') + '%'; }
-function tierAt(tiers, amount){ return tiers.find(function(t){ return amount <= t.max; }) || tiers[tiers.length-1]; }
+// upperExclusive=true: 구간 상한 미만(삼성 "○○ 미만" 표기) / false: 상한 이하(신한 "○○ 이하" 표기)
+function tierAt(tiers, amount, upperExclusive){
+  return tiers.find(function(t){ return upperExclusive ? amount < t.max : amount <= t.max; }) || tiers[tiers.length-1];
+}
 
 function effRate(b, ch, amount){
   var tiers = (ch === 'hts' && b.tiersHts) ? b.tiersHts : b.tiers;
   var rate, add = 0;
-  if(tiers){ var t = tierAt(tiers, amount); rate = t.rate; add = t.add || 0; }
+  if(tiers){ var t = tierAt(tiers, amount, !!b.tierUpperExclusive); rate = t.rate; add = t.add || 0; }
   else { rate = (ch === 'hts') ? b.hts : b.mts; }
   var fee = amount * rate / 100 + add;
   if(b.minFee) fee = Math.max(fee, b.minFee);
@@ -1484,7 +1496,7 @@ function renderTier(){
     sets.forEach(function(s){
       s.tiers.forEach(function(t, i){
         var fee = 10000000 * t.rate / 100 + (t.add || 0);
-        var inRange = 10000000 <= t.max && (i === 0 || 10000000 > s.tiers[i-1].max);
+        var inRange = tierAt(s.tiers, 10000000, !!b.tierUpperExclusive) === t;
         out.push('<tr class="' + (inRange ? 'hi' : '') + '" data-broker="' + b.name + '">' +
           '<td class="l nw">' + (i === 0 ? '<div class="bname">' + s.label + '</div>' : '<span class="mute">〃</span>') + '</td>' +
           '<td class="l nw">' + t.label + '</td>' +
