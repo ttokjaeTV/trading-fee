@@ -348,6 +348,10 @@
   }
   input[type=number]:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
   .input-hint { font-size: 12px; color: var(--ink-mute); margin-top: 6px; font-weight: 600; }
+  /* 숫자 바로 뒤에 붙는 단위 (원) — 위치는 JS(placeUnits)가 글자 폭을 재서 맞춘다 */
+  .unit-wrap { display: block; position: relative; }
+  .input-unit { position: absolute; top: 50%; transform: translateY(-50%); left: 0; pointer-events: none;
+    font-size: 15px; font-weight: 700; color: var(--ink-mute); white-space: nowrap; visibility: hidden; }
   .segment { display: inline-flex; background: var(--bg-alt); border: 1.5px solid var(--border); border-radius: 12px; padding: 4px; gap: 4px; width: 100%; }
   .segment button {
     flex: 1; border: none; background: transparent; font-family: inherit;
@@ -667,7 +671,7 @@
     <div class="calc-grid">
       <div>
         <label class="label">1회 거래금액 (원)</label>
-        <input type="number" id="amount" value="10000000" step="1000000" min="0">
+        <span class="unit-wrap"><input type="number" id="amount" data-unit="원" value="10000000" step="1000000" min="0"></span>
         <div class="input-hint" id="amount-hint">1,000만원</div>
       </div>
       <div>
@@ -1581,9 +1585,40 @@ function renderLinks(){
 // ============================================================
 var calcState = { market:'domestic', channel:'mts' };
 
+// ---------- 입력칸 숫자 뒤 단위 ----------
+// input에 data-unit이 있으면 입력한 숫자 바로 뒤에 단위(원)를 붙여 보여 준다.
+// 글자 폭은 같은 글꼴을 입힌 숨은 span으로 잰다.
+var unitMeasure = null;
+function placeUnits(){
+  if (!unitMeasure) { unitMeasure = document.createElement('span'); unitMeasure.style.cssText = 'position:absolute;left:-9999px;top:0;visibility:hidden;white-space:pre;'; document.body.appendChild(unitMeasure); }
+  document.querySelectorAll('.unit-wrap input[data-unit]').forEach(function(inp){
+    var tag = inp.parentNode.querySelector('.input-unit');
+    if (!tag) { tag = document.createElement('span'); tag.className = 'input-unit'; tag.textContent = inp.getAttribute('data-unit'); inp.parentNode.insertBefore(tag, inp.nextSibling); }
+    var cs = getComputedStyle(inp);
+    // 값이 비었거나, 숨어 있거나, 숫자가 이미 칸을 넘쳐 잘려 보이면 단위를 감춘다
+    if (inp.value === '' || !inp.offsetWidth || inp.scrollWidth > inp.clientWidth + 1) { tag.style.visibility = 'hidden'; return; }
+    ['fontFamily', 'fontSize', 'fontWeight', 'fontVariantNumeric', 'letterSpacing'].forEach(function(k){ unitMeasure.style[k] = cs[k]; });
+    unitMeasure.textContent = inp.value;
+    var w = unitMeasure.getBoundingClientRect().width;
+    var left = parseFloat(cs.paddingLeft) + parseFloat(cs.borderLeftWidth) + w + 4 - inp.scrollLeft;
+    tag.style.left = Math.round(left) + 'px';
+    tag.style.fontSize = cs.fontSize;
+    // 마우스 화면의 숫자칸은 오른쪽 안쪽에 위·아래 화살표(약 16px)가 뜬다 → 그 자리까지 오면 감춘다
+    var spin = inp.type === 'number' && matchMedia('(hover: hover) and (pointer: fine)').matches ? 16 : 0;
+    var limit = inp.clientWidth - parseFloat(cs.paddingRight) + (spin ? -spin : 8);
+    tag.style.visibility = left + tag.offsetWidth < limit ? 'visible' : 'hidden';
+  });
+}
+(function(){
+  var ut;
+  window.addEventListener('resize', function(){ clearTimeout(ut); ut = setTimeout(placeUnits, 200); });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(placeUnits);   // 웹폰트가 늦게 뜨면 폭을 다시 잰다
+})();
+
 function renderCalc(){
   var amount = Math.max(0, Number(document.getElementById('amount').value) || 0);
   document.getElementById('amount-hint').textContent = korAmount(amount);
+  placeUnits();
   var isDom = calcState.market === 'domestic';
   var seg = document.getElementById('channel-seg');
   seg.style.opacity = isDom ? '1' : '0.35';
