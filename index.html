@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>증권사 수수료 비교표 · 똑재TV</title>
+<link rel="icon" href="/favicon.ico">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
 <style>
   :root {
@@ -442,6 +443,11 @@
 }
   .hub-back { display: inline-block; margin: 0 0 8px; font-size: 13px; font-weight: 600; color: var(--ink-mute); text-decoration: none; }
   .hub-back:hover { color: var(--accent); }
+  .scroll-hint { display: none; margin: 12px 0 -8px; text-align: center; font-size: 12px; font-weight: 700; color: var(--ink-mute); }
+  @media (max-width: 570px) { .scroll-hint.sh-570 { display: block; } }
+  @media (max-width: 970px) { .scroll-hint.sh-970 { display: block; } }
+  @media (max-width: 1130px) { .scroll-hint.sh-1130 { display: block; } }
+  @media (max-width: 1190px) { .scroll-hint.sh-1190 { display: block; } }
 </style>
 </head>
 <body>
@@ -525,6 +531,7 @@
       </div>
       <div class="sort-hint">↕ 회색 표 머리글을 누르면 오름차순 ↔ 내림차순으로 정렬됩니다</div>
     </div>
+    <p class="scroll-hint sh-1190" aria-hidden="true">← 옆으로 밀어 보세요 →</p>
     <div class="table-wrap">
       <table class="t master">
         <thead>
@@ -573,6 +580,7 @@
         정액 추가금(+원)이 붙는 구간은 소액 거래에서 특히 불리합니다.
       </div>
     </div>
+    <p class="scroll-hint sh-570" aria-hidden="true">← 옆으로 밀어 보세요 →</p>
     <div class="table-wrap">
       <table class="t">
         <thead>
@@ -605,6 +613,7 @@
         조건을 그대로 옮겨 적었습니다. 적립식으로 ETF를 모으시는 분들은 이 표가 위 표준 요율보다 중요할 수 있습니다.
       </div>
     </div>
+    <p class="scroll-hint sh-1130" aria-hidden="true">← 옆으로 밀어 보세요 →</p>
     <div class="table-wrap">
       <table class="t">
         <thead>
@@ -644,6 +653,7 @@
         미국주식 수수료를 깎아주는 이벤트는 <strong>메리츠증권(USD 환전 무료) 외에는 확인되지 않았습니다.</strong>
       </div>
     </div>
+    <p class="scroll-hint sh-970" aria-hidden="true">← 옆으로 밀어 보세요 →</p>
     <div class="table-wrap">
       <table class="t">
         <thead>
@@ -691,6 +701,7 @@
         <div class="input-hint" id="ch-hint">KB·신한은 매체별 차이가 큽니다</div>
       </div>
     </div>
+    <p class="scroll-hint sh-570" aria-hidden="true">← 옆으로 밀어 보세요 →</p>
     <div class="table-wrap">
       <table class="t">
         <thead id="th-calc"></thead>
