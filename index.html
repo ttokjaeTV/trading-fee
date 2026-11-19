@@ -200,6 +200,7 @@
   table.master td.c-evt { background: rgba(220,228,220,0.3); text-align: left; }
   table.master tbody tr.hi td.c-dom { background: rgba(244,213,196,0.55); }
   table.master tbody tr.hi td.c-evt { background: rgba(220,228,220,0.5); }
+  table.master th.g-evt, table.master td.c-evt { min-width: 280px; } /* 이벤트 칸이 210px로 눌려 한 행이 8줄 넘게 늘어나던 것을 줄인다 */
 
   .bname { font-weight: 900; font-size: 14px; letter-spacing: -0.3px; }
   .bsub { font-size: 11px; color: var(--ink-mute); font-weight: 700; margin-top: 3px; line-height: 1.45; }
@@ -444,7 +445,7 @@
   .hub-back { display: inline-block; margin: 0 0 8px; font-size: 13px; font-weight: 600; color: var(--ink-mute); text-decoration: none; }
   .hub-back:hover { color: var(--accent); }
   .scroll-hint { display: none; margin: 12px 0 8px; text-align: center; font-size: 12px; font-weight: 700; color: var(--ink-mute); }
-  @media (max-width: 1184px) { .scroll-hint.sh-1184 { display: block; } }
+  @media (max-width: 1254px) { .scroll-hint.sh-1254 { display: block; } }
   @media (max-width: 566px) { .scroll-hint.sh-566 { display: block; } }
   @media (max-width: 1130px) { .scroll-hint.sh-1130 { display: block; } }
   @media (max-width: 968px) { .scroll-hint.sh-968 { display: block; } }
@@ -533,7 +534,7 @@
       </div>
       <div class="sort-hint">↕ 회색 표 머리글을 누르면 오름차순 ↔ 내림차순으로 정렬됩니다</div>
     </div>
-    <p class="scroll-hint sh-1184" aria-hidden="true">← 옆으로 밀어 보세요 →</p>
+    <p class="scroll-hint sh-1254" aria-hidden="true">← 옆으로 밀어 보세요 →</p>
     <div class="table-wrap">
       <table class="t master">
         <thead>
